@@ -1,13 +1,13 @@
 
-### 这些都是我在信息学竞赛期间写的代码，文件名和目录都是根据题的URL来起的。
+### 这些是我在信息学竞赛期间写的代码，文件名和目录都是根据题的URL来起的。
 
-## [NOI题库](http://noi.openjudge.cn/)
+## [NOI题库传送门](http://noi.openjudge.cn/)
 
-天坑！！小心！！
+天坑！！慎入！！
 
 ——来自被竞赛折腾的死去活来的冰封。
 
-# 目前的未完成代码：
+# 目前满分未达成代码：
 
 + [机器翻译](https://github.com/ice1000/NOI-codes/blob/master/ch0112/07.cpp)
 + [数字方格](https://github.com/ice1000/NOI-codes/blob/master/ch0201/1749.cpp)
