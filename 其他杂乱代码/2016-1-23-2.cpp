@@ -87,9 +87,9 @@ int main(void){
 
 		while(!q.empty())
 			q.pop();
-		
+
 		q.push(findStart());
-		
+
 		bfs();
 	}
 	return 0;
