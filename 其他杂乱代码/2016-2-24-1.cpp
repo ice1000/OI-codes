@@ -4,6 +4,6 @@ const int MAX = 300;
 
 int f[MAX];
 
-int main(int argc,char** argv){ 
+int main(int argc,char** argv){
 	return 0;
 }
