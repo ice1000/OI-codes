@@ -1,33 +1,32 @@
-#include<stdio.h>
+#include <deque>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+unsigned int m,n;
 
-long dir[2000],M,N,cnt = 0,left = 0,right = 0,text[2000];
+deque <int> Q;
 
-bool search(int fafafa){
-     for(int i = left; i < right; i++){
-         if(dir[i] == fafafa){
-             return true;
-         }
-     }
-//     not found
-     right++;
-     dir[right] = fafafa;
-     if(right - left > M){
-         left++;
-     }
-     cnt++;
-     return false;
+int main(int argc, char* argv[]) {
+	int t,ans=0;
+	scanf("%d %d",&m,&n);
+	for(unsigned int i=0;i<n;i++) {
+		scanf("%d",&t);
+		if(find(Q.begin(),Q.end(),t)==Q.end()) {
+			ans++;
+			Q.push_back(t);
+			if( Q.size() >= m)
+				Q.pop_front();
+		}
+	}
+	printf("%d\n",ans);
+	return 0;
 }
 
-int main(void){
-    for(int i = 0; i < 2000; i++){
-        dir[i] = -1;
-    }
-    scanf("%d %d",&M,&N);
-    for(int i = 0; i < N; i++){
-        scanf("%d",&text[i]);
-        search(text[i]);
-    }
-    printf("%d",cnt-1);
-//    getchar();getchar();getchar();getchar();getchar();getchar();getchar();
-    return 0;
-}
+/*
+ÑùÀý #1£º
+3 7
+1 2 1 5 4 4 1
+ÑùÀý #2£º
+2 10
+8 824 11 78 11 78 11 78 8 264
+*/

@@ -17,7 +17,6 @@
 
 ## 目前满分未达成代码：
 
-+ [机器翻译](https://github.com/ice1000/NOI-codes/blob/master/ch0112/07.cpp)
 + [数字方格](https://github.com/ice1000/NOI-codes/blob/master/ch0201/1749.cpp)
 + [熄灯问题](https://github.com/ice1000/NOI-codes/blob/master/ch0201/1813.cpp)
 + [迷宫](https://github.com/ice1000/NOI-codes/blob/master/ch0205/1792.cpp)
