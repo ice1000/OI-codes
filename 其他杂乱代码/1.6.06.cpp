@@ -25,9 +25,8 @@ int main(void){
   }
   j = 0;
   for(i = 0; i <= l; i++){
-    if(aa[i]){
+    if(aa[i])
       j++;
-    }
   }
   cout<<j;
   //	system("pause");

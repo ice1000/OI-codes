@@ -7,7 +7,11 @@
 
 ——来自被竞赛折腾的死去活来的冰封。
 
-# 目前满分未达成代码：
+## 关于文件名
++ 文件名取自NOI题库的题的URL，根据题组命名文件名，根据题号命名代码文件的名字。
++ 
+
+## 目前满分未达成代码：
 
 + [机器翻译](https://github.com/ice1000/NOI-codes/blob/master/ch0112/07.cpp)
 + [数字方格](https://github.com/ice1000/NOI-codes/blob/master/ch0201/1749.cpp)
