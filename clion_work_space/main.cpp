@@ -97,7 +97,7 @@ typedef struct poi{
 	int y;
 } poi;
 
-int main(int argc,char ** argv){
+int main(int argc,char* argv[]){
 	room a[size][size];
 	bool b[size][size];
 	// x是横坐标, y是纵坐标
@@ -191,7 +191,7 @@ int main(int argc,char ** argv){
 		if(this_max > max) max = this_max;
 	}
 
-	printf("%i %i", cnt, max);
+	printf("%i\n%i", cnt, max);
 	return 0;
 }
 /*

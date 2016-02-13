@@ -2,10 +2,10 @@
 #include <queue>
 using namespace std;
 
-// é•¿åº¦é™åˆ¶
+// ³¤¶ÈÏŞÖÆ
 const int size = 50;
 
-// æˆ¿é—´ç±»
+// ·¿¼äÀà
 typedef struct room {
 	bool north;
 	bool south;
@@ -91,16 +91,16 @@ typedef struct room {
 	}
 } room ;
 
-// åæ ‡ç±»
+// ×ø±êÀà
 typedef struct poi{
 	int x;
 	int y;
 } poi;
 
-int main(int argc,char ** argv){
+int main(int argc,char* argv[]){
 	room a[size][size];
 	bool b[size][size];
-	// xæ˜¯æ¨ªåæ ‡, yæ˜¯çºµåæ ‡
+	// xÊÇºá×ø±ê, yÊÇ×İ×ø±ê
 	int y, x;
 	scanf("%i %i", &x, &y);
 	for(int i = 0; i < x; i++)
@@ -153,7 +153,7 @@ int main(int argc,char ** argv){
 		while(!q.empty()){
 			poi p = q.front();
 			q.pop();
-			// æŒ‰ç†è¯´ä¸éœ€è¦åˆ¤æ–­è¶Šç•Œã€‚å› ä¸ºè¾¹ç¼˜æœ‰å¢™ã€‚
+			// °´ÀíËµ²»ĞèÒªÅĞ¶ÏÔ½½ç¡£ÒòÎª±ßÔµÓĞÇ½¡£
 			if( !a[p.x][p.y].east && !b[p.x][p.y+1]){
 				p.y++;
 //				printf("p.x = %i, p.y = %i\n", p.x, p.y);
@@ -191,17 +191,17 @@ int main(int argc,char ** argv){
 		if(this_max > max) max = this_max;
 	}
 
-	printf("%i %i", cnt, max);
+	printf("%i\n%i", cnt, max);
 	return 0;
 }
 /*
- * æµ‹è¯•æ•°æ®
+ * ²âÊÔÊı¾İ
 4
 7
 11 6 11 6 3 10 6
 7 9 6 13 5 15 5
 1 10 12 7 13 7 5
 13 11 10 8 10 12 13
- * ç­”æ¡ˆ
+ * ´ğ°¸
 5 9
  */
