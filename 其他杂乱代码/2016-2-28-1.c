@@ -2,7 +2,6 @@
 
 int n;
 int res;
-int a[100];
 
 void dfs(int now){
     if( n - now <= 1 ){
