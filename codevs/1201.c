@@ -5,7 +5,7 @@ int main(int argc, char* argv[]){
     long cnt;
     scanf("%li", &cnt);
     while(cnt--){
-        long i;
+        auto long i;
         scanf("%li", &i);
         min = i >= min ? min : i;
         max = i <= max ? max : i;
