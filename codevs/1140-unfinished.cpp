@@ -18,9 +18,10 @@ int main(int argc, char** argv){
     scanf("%i%i%i", &s, &t, &w);
     scanf("%s", ss);
     size = t - s;
-    t--;
-    for(char i = 0; i < size; i++)
-        a[i] = i + t + 'a';
+    s--;
+    char from = s + 'a';
+    for(int i = 0; i < size; i++)
+        a[i] = from + i;
 
     printf("%s", a);
 //    while(1);
