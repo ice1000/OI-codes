@@ -1,23 +1,21 @@
 #include<stdio.h>
 
-int res = 1;
+long res ;
 
 void dfs(int cur){
-    if(cur){
-        if(cur == 1){
-            res++;
-            return ;
-        }
-        dfs(--cur);
-        dfs(--cur);
+    if(cur == 1 || cur == 0){
+        res++ ;
+        return ;
     }
+    dfs(--cur) ;
+    dfs(--cur) ;
 }
 
 int main(int argc, char** argv){
-    int num;
-    scanf("%i", &num);
-    dfs(num);
-    printf("%i", res);
+    long num ;
+    scanf("%li", &num) ;
+    dfs(num) ;
+    printf("%li", res) ;
     // while(1);
     return 0;
 }
