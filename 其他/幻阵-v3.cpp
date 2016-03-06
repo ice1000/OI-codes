@@ -21,7 +21,7 @@ int main(int argc, char** argv){
 		if(a[x][y] != 0){
 			x = i;
 			y = j;
-			x += N - 1;
+			x ++;
 			x %= N;
 //			printf("x = %i, y = %i\n", x, y);
 		}
