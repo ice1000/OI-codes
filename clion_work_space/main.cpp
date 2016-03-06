@@ -17,11 +17,11 @@ int size;
 size_t len;
 
 bool dfs(size_t idx) {
-	if(a[idx] >= fro + size) {
+	if(a[idx] >= fro + size - len + idx) {
 		printf("a[idx] >= fro + size.\n");
 		return dfs(idx - 1);
 	}
-//	a[idx++]++;
+	a[idx]++;
 	for(size_t i = idx; i < len; i++){
 		a[i] = (char) (a[i - 1] + 1);
 		if(a[i] >= fro + size){

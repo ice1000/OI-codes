@@ -1,26 +1,53 @@
+#include <stdio.h>
+#include <string.h>
 /*
-	sä¸ºæ‰€ä½¿ç”¨çš„æœ€å°çš„å­—æ¯çš„åºå·
-	tä¸ºæ‰€ä½¿ç”¨çš„æœ€å¤§çš„å­—æ¯çš„åºå·
-	wä¸ºæ•°å­—çš„ä½æ•°
+ JamÊÇ¸öÏ²»¶±êÐÂÁ¢ÒìµÄ¿ÆÑ§¹ÖÈË¡£Ëû²»Ê¹ÓÃ°¢À­²®Êý×Ö¼ÆÊý£¬¶øÊÇÊ¹ÓÃÐ¡Ð´Ó¢ÎÄ×ÖÄ¸¼ÆÊý£¬Ëû¾õµÃÕâÑù×ö£¬»áÊ¹ÊÀ½ç¸ü¼Ó·á¸»¶à²Ê¡£
+ ÔÚËûµÄ¼ÆÊý·¨ÖÐ£¬Ã¿¸öÊý×ÖµÄÎ»Êý¶¼ÊÇÏàÍ¬µÄ£¨Ê¹ÓÃÏàÍ¬¸öÊýµÄ×ÖÄ¸£©Ó¢ÎÄ×ÖÄ¸°´Ô­ÏÈµÄË³Ðò£¬ÅÅÔÚÇ°ÃæµÄ×ÖÄ¸Ð¡ÓÚÅÅÔÚËüºóÃæµÄ×ÖÄ¸¡£
+ ÎÒÃÇ°ÑÕâÑùµÄ¡°Êý×Ö¡±³ÆÎªJamÊý×Ö¡£ÔÚJamÊý×ÖÖÐ£¬Ã¿¸ö×ÖÄ¸»¥²»ÏàÍ¬£¬¶øÇÒ´Ó×óµ½ÓÒÊÇÑÏ¸ñµÝÔöµÄ¡£
+ Ã¿´Î£¬Jam»¹Ö¸¶¨Ê¹ÓÃ×ÖÄ¸µÄ·¶Î§£¬ÀýÈç£¬´Ó2µ½10£¬±íÊ¾Ö»ÄÜÊ¹ÓÃ{b,c,d,e,f,g,h,i,j}ÕâÐ©×ÖÄ¸¡£
+ Èç¹ûÔÙ¹æ¶¨Î»ÊýÎª5£¬ÄÇÃ´£¬½ô½ÓÔÚJamÊý×Ö¡°bdfij¡±Ö®ºóµÄÊý×ÖÓ¦¸ÃÊÇ¡°bdghi¡±¡£
+ £¨Èç¹ûÎÒÃÇÓÃU¡¢VÒÀ´Î±íÊ¾JamÊý×Ö¡°bdfij¡±Óë¡°bdghi¡±£¬ÔòU<V< span>£¬ÇÒ²»´æÔÚJamÊý×ÖP£¬Ê¹U<P<V< span>£©¡£
+ ÄãµÄÈÎÎñÊÇ£º
+ ¶ÔÓÚ´ÓÎÄ¼þ¶ÁÈëµÄÒ»¸öJamÊý×Ö£¬°´Ë³ÐòÊä³ö½ô½ÓÔÚºóÃæµÄ5¸öJamÊý×Ö£¬Èç¹ûºóÃæÃ»ÓÐÄÇÃ´¶àJamÊý×Ö£¬ÄÇÃ´ÓÐ¼¸¸ö¾ÍÊä³ö¼¸¸ö¡£
 */
 
-#include<stdio.h>
+char a[100];
+char fro;
+int size;
+size_t len;
 
-int size ;
-
-void dfs(int idx, char n[5]){
+bool dfs(size_t idx) {
+	if(a[idx] >= fro + size - len + idx) {
+		printf("a[idx] >= fro + size.\n");
+		return dfs(idx - 1);
+	}
+	a[idx]++;
+	for(size_t i = idx; i < len; i++){
+		a[i] = (char) (a[i - 1] + 1);
+		if(a[i] >= fro + size){
+			return dfs(idx - 1);
+		}
+	}
+	return true;
 }
-
+/*for(size_t i = len - 1; i >= 0; i--){
+if(a[i] >= fro + size){
+//
+}
+}*/
 int main(int argc, char** argv){
-    char* ss;
-    int s, t, w;
-    scanf("%i%i%i", &s, &t, &w);
-    scanf("%s", ss);
-    size = t - s;
-    s--;
-    char fro = 'a' - (char)1 + (char)s;
+	int s, t, w;
+	scanf("%i%i%i", &s, &t, &w);
+	scanf("%s", a);
+	size = t - s;
+	len = strlen(a);
+	fro = (char) ('a' - 1 + s);
 
-    printf("%c", fro);
-//    while(1);
-    return 0;
+	for(int i = 0; i < 5 && dfs(len - 1); i++) {
+		printf("%s\n", a);
+	}
+//	printf("%c", fro);
+//	while(1);
+	return 0;
 }
+
