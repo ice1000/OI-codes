@@ -6,7 +6,6 @@
 
 #include<stdio.h>
 
-char a[26] ;
 int size ;
 
 void dfs(int idx, char n[5]){
@@ -19,11 +18,9 @@ int main(int argc, char** argv){
     scanf("%s", ss);
     size = t - s;
     s--;
-    char from = s + 'a';
-    for(int i = 0; i < size; i++)
-        a[i] = from + i;
+    char fro = 'a' - (char)1 + (char)s;
 
-    printf("%s", a);
+    printf("%c", fro);
 //    while(1);
     return 0;
 }
