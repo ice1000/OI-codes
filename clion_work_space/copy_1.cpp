@@ -6,7 +6,7 @@ const int go[4][2] = {
 		1, 0, -1, 0,
 		0, 1, 0, -1
 };
-char a[size][size];
+char a1[size][size];
 bool b[size][size];
 int x,y, cnt = 1;
 typedef struct poi{
@@ -24,10 +24,10 @@ int main233(int argc, char* argv[]){
 		poi p;
 		queue<poi> q;
 		for(int i = 0; i < x; i++)
-			scanf("%s", a[i]);
+			scanf("%s", a1[i]);
 		for(int i = 0; i < x; i++)
 			for(int j = 0; j < y; j++)
-				if(a[i][j] == '@'){
+				if(a1[i][j] == '@'){
 					p = poi(i,j);
 				}
 		while (!q.empty()) q.pop();
@@ -41,7 +41,7 @@ int main233(int argc, char* argv[]){
 				p.y += go[i][1];
 				if(p.x < 0 || p.x >= x || p.y < 0 || p.y >= y)
 					goto error233;
-				if(a[p.x][p.y] == '.' && !b[p.x][p.y]) {
+				if(a1[p.x][p.y] == '.' && !b[p.x][p.y]) {
 					q.push(p);
 					b[p.x][p.y] = true;
 					cnt++;
