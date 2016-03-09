@@ -3,7 +3,7 @@
 const int size = 100;
 const int go[4][2] = {
 	1, 0, -1, 0,
-  0, 1, 0, -1
+	0, 1, 0, -1
 };
 char a[size][size];
 int x,y, cnt = 1;
@@ -14,7 +14,7 @@ void dfs(int x, int y){
 
 int main(int argc, char* argv[]){
 	while(1){
-        int cx, cy;
+	        int cx, cy;
 		scanf("%i%i", &y, &x);
 		if(x == 0 && y == 0)
 			break;
@@ -25,8 +25,8 @@ int main(int argc, char* argv[]){
 				if(a[i][j] == '@'){
 					cx = i;
 					cy = j;
-                }
-        dfs(cx, cy);
+                		}
+	        dfs(cx, cy);
 	}
 	printf("%i\n", cnt);
 	return 0;
