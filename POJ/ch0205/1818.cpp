@@ -3,8 +3,8 @@
 using namespace std;
 const int size = 100;
 const int go[4][2] = {
-		1, 0, -1, 0,
-    0, 1, 0, -1
+	1, 0, -1, 0,
+	0, 1, 0, -1
 };
 char a[size][size];
 // bool b[size][size];
@@ -54,8 +54,7 @@ int main(int argc, char* argv[]){
 				p.y -= go[i][1];
 			}
 		}
+		printf("%i\n", cnt);
 	}
-	printf("%i\n", cnt);
-//	while(1);
 	return 0;
 }
