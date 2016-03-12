@@ -2,11 +2,11 @@
 // Created by asus1 on 2016/3/5.
 //
 
-#include<iostream>
-using namespace std;
-const int size = 5;
+#include <stdio.h>
 
-int mai3n(int argc, char** argv) {
+int main(int argc, char** argv) {
+	int size;
+	scanf("%i", &size);
 	int a[size][size],count = 1;
 	int k = 0,n = size;
 	while( k < n ) {
@@ -24,8 +24,8 @@ int mai3n(int argc, char** argv) {
 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++)
-			cout << a[i][j] << "\t" ;
-		cout << endl;
+			printf("%i ", a[i][j]);
+		printf("\n");
 	}
 //	system("pause");
 	return 0;

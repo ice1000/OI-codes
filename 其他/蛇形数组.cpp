@@ -1,7 +1,7 @@
 #include<stdio.h>
 
-#define MAXN 5
-#define MAXM 5
+const int MAXN = 5;
+const int MAXM = 5;
 
 int a[MAXN][MAXM];
 
