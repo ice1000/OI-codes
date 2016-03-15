@@ -3,7 +3,7 @@
 #include<queue>
 using namespace std;
 
-#define SIZE 1000
+const int SIZE = 1000;
 
 int step[4][2] = {{-1,0},{1,0},{0,-1},{0,1}};
 
