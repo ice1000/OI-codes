@@ -13,9 +13,8 @@ void dfs(int n){
         cnt = -1;
         return ;
     }
-    if(n == 1){
+    if(n == 1)
         return ;
-    }
     if(n % 2){
         dfs(n * 3 + 1);
         return ;
