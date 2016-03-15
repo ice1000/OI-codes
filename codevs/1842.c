@@ -1,3 +1,8 @@
+/*
+作者:千里冰封
+题目:p1842 递归第一次
+*/
+
 #include <stdio.h>
 
 int dfs(int x){
