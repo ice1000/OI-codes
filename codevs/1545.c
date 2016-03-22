@@ -20,6 +20,5 @@ int main(int argc, char* argv[]) {
     qsort(s, a, sizeof(s[0]), cmp);
     for(i = 0; i < a; i++)
 	    printf("%d\n", s[i]);
-	while(1000);
     return 0;
 }
