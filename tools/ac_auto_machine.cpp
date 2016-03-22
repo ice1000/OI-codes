@@ -1,3 +1,5 @@
+// It`s not executable. Just 4 saving code. It`s not written by me.
+
 int num_node, trie[N][M], val[N], num[N];
 const int M = 26;
 int idx(char c){
