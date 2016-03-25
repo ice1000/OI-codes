@@ -40,4 +40,20 @@
 + [质数环](./codevs/1031.c)
 + [小明集邮票](./codevs/3261.cpp)
 
-希望小伙伴们能帮我解决问题:joy:真的
+希望小伙伴们能帮我解决问题:joy:真的<br/>
+题目框架——
+
+*** C
+/*
+作者:千里冰封
+题目:
+*/
+
+#include <stdio.h>
+
+int main(int argc, char* argv[]) {
+    int a, b;
+    scanf("%i%i", &a, &b);
+    return 0;
+}
+***
