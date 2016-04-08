@@ -24,11 +24,11 @@ void sort(int left,int right){
 }
 
 int main(void){
-    int k,jjfly;
+    int k,jjfly,i;
     scanf("%d %d",&jjfly,&k);
-    for(int i = 0; i < jjfly; i++){
+    for(i = 0; i < jjfly; i++)
         scanf("%ld %f",&a[i].num,&a[i].scr);
-    }
+
     sort(0,jjfly);
     printf("%d %.1f",a[jjfly-k+1].num,a[jjfly-k+1].scr);
     return 0;
