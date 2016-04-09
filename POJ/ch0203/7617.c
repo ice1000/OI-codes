@@ -1,23 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <algorithm>
-
-using namespace std;
 
 int main(int argc,char* argv[]){
 	long *a;
-	int N, M;
+	int N, M, i;
 	scanf("%d", &N);
 	a = (long *) malloc(N * sizeof(long));
 
-	for(int i = 0; i < N; i++)
+	for(i = 0; i < N; i++)
 		scanf("%li", &a[i]);
 
 	scanf("%d", &M);
 
 	sort(a, a + N);
 
-	for(int i = 0; i < M; i++)
+	for(i = 0; i < M; i++)
 		printf("%li\n", a[ N - i - 1]);
 
 	free(a);
