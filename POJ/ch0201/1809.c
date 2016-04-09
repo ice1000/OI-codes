@@ -1,7 +1,5 @@
 #include<stdio.h>
-#include<algorithm>
 #define SIZE 10000
-using namespace std;
 int a[SIZE][16];
 int b[SIZE];
 int main(void){
