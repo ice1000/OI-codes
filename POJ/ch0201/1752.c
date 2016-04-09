@@ -6,14 +6,12 @@ void fuck(){
 }
 
 int main(void){
-  int a,b[32768];
-  int c;
-  int d;
+  int a, b[32768], i, c, d;
   scanf("%d",&a);
-  for(int i = 0; i < a; i++){
+  for(i = 0; i < a; i++){
     scanf("%d",&b[i]);
   }
-  for(int i = 0; i < a; i++){
+  for( = 0; i < a; i++){
     if((b[i]<4)||(b[i]%2!=0)){
         printf("0 0\n");
         continue;
