@@ -5,11 +5,13 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <algorithm>
-using namespace std;
 const int size = 0xfffff;
 int n, m;
 int h[size], v[size], dp[size];
+
+int max(int x, int y){
+	return x > y ? x : y;
+}
 
 int main(){
     scanf("%d%d", &n, &m);
