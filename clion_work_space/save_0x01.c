@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 const int maxSize = 100000;
-long long counter = 0;
+long counter = 0;
 
 void merge(int *source, int startIndex, int midIndex, int endIndex) {
 	int *temp = (int *) malloc(maxSize * sizeof(int));
@@ -45,15 +45,16 @@ void mergeSort(int *sourceArr, int startIndex, int endIndex) {
 	}
 }
 
-int main_(int argc, char * argv[]) {
+int main(int argc, char * argv[]) {
 	int *a;
 	int size;
 	scanf("%i", &size);
 	a = (int *)malloc(size * sizeof(int));
-	for(int i = 0; i < size; i++)
+	int i;
+	for(i = 0; i < size; i++)
 		scanf("%i", &a[i]);
 	mergeSort(a, 0, size - 1);
-	printf("%lli", counter);
+	printf("%li", counter);
 	free(a);
 	return 0;
 }
