@@ -22,7 +22,8 @@ bool dfs(size_t idx) {
 		return dfs(idx - 1);
 	}
 	a[idx]++;
-	for(size_t i = idx; i < len; i++){
+	size_t i;
+	for(i = idx; i < len; i++){
 		a[i] = (char) (a[i - 1] + 1);
 		if(a[i] >= fro + size){
 			return dfs(idx - 1);
@@ -43,9 +44,10 @@ int main(int argc, char** argv){
 	len = strlen(a);
 	fro = (char) ('a' - 1 + s);
 
-	for(int i = 0; i < 5 && dfs(len - 1); i++) {
+	int 1;
+	for(i = 0; i < 5 && dfs(len - 1); i++)
 		printf("%s\n", a);
-	}
+
 //	printf("%c", fro);
 //	while(1);
 	return 0;
