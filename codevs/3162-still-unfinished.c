@@ -4,11 +4,12 @@ int max(int x, int y){return x > y ? x : y;}
 int min(int x, int y){return x < y ? x : y;}
 int main(int argc, char* argv[]){
     const int size = 0xf;
+	const int MIN = -0xfff;
     int a[size], dp[size][size], m, k;
-    memset(a,  0, size);
-    memset(dp, 0, size);
+    memset(a,  MIN, size);
+    memset(dp, MIN, size);
     scanf("%d%d", &m, &k);
-    int i, j, k;
+    int i, j, x;
     for(i = 1; i <= m; i++){
         int s;
         scanf("%d", &s);
@@ -16,10 +17,19 @@ int main(int argc, char* argv[]){
     }
     for(i = 1; i <= m; i++){
         for(j = i; j <= k; j++){
-            for(k = i; k <= j; k++){
-                // f[i][j] = min{max(f[x][j-1], sum(x+1, i)), j<x<i}
+			dp[i][j] = MIN;
+            for(x = i; x <= j; x++){
+				dp[i][j] = min(dp[i][j], a[i] - a[x + 1]);
+            }
+        }
+    }
+    for(i = 1; i <= k; i++)
+        printf("%d %d\n", dp[k][i]);
+    scanf("%d%d");
+    return 0;
+}
+                // f[i][j] = min{max(f[k][j-1], sum(k+1, i)), j<k<i}
 /*
-
 int i,j,k;
     int mintime=INT_MIN;
     
@@ -48,10 +58,4 @@ int i,j,k;
         }
     }
     return dp[n][m];
-
 */
-            }
-        }
-    }
-    return 0;
-}
