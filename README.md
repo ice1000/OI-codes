@@ -4,7 +4,7 @@
 
 ## 各种传送门
 ### [成外OJ 成都外国语学校自己的OJ](http://www.cwoj.tk/)
-#### [POJ题库传送门](http://noi.openjudge.cn/)
+#### [openjudge题库传送门](http://noi.openjudge.cn/)
 #### [CodeVS题库传送门](http://www.codevs.cn/)
 #### [落谷题库传送门](http://www.luogu.org/)
 #### [Vijos题库传送门](https://vijos.org/)
