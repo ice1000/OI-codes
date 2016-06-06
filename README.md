@@ -1,6 +1,5 @@
-# 关于OI-codes
-这些是我在信息学竞赛期间写的代码，文件名和目录都是根据题的URL来起的。<br/>
-建托管仅为保存代码用。
+# About OI-codes
+coding for NOIP.
 
 ## 各种传送门
 ### [成外OJ 成都外国语学校自己的OJ](http://www.cwoj.tk/)
