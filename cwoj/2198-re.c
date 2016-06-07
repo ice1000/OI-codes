@@ -10,15 +10,13 @@ void resort(char *a, int size) {
 		a[size - 1 - i] = c;
 	}
 }
-int max(int a, int b) {
-	return a > b ? a : b;
-}
+int max(int a, int b) {	return a > b ? a : b; }
 int main() {
 	char *a, *b;
-	char c[608];
+	char c[700];
 	int i, mark = 0, a0 = 0, b0 = 0;
-	a = (char* ) malloc (605 * sizeof(char));
-	b = (char* ) malloc (605 * sizeof(char));
+	a = (char* ) malloc (700 * sizeof(char));
+	b = (char* ) malloc (700 * sizeof(char));
 	for(i = 0; i < sizeof(c); i++)
 		c[i] = '0';
 	scanf("%s%s", a, b);
@@ -62,9 +60,8 @@ int main() {
 	if(mark < 0 || a0 && b0) printf("-");
 	if(mark > 0) printf("1");
 	for(; i >= 0; i--) {
-		if(mark < 0 && (a0 != b0)) {
+		if(mark < 0 && (a0 != b0))
 			c[i] = '9' - (c[i] - '0');
-		}
 		printf("%c", c[i]);
 	}
 	free(a);
