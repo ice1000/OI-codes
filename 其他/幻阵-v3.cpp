@@ -26,7 +26,8 @@ int main(int argc, char** argv){
 //			printf("x = %i, y = %i\n", x, y);
 		}
 	}
-	for(int i = 0; i < N; i++){
+	int i;
+	for(i = 0; i < N; i++){
 		for(int j = 0; j < N; j++){
 			printf("%i\t", a[i][j]);
 		}
