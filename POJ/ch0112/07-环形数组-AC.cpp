@@ -14,8 +14,8 @@ int main(void){
 	int M = 0;
 	int N = 0;
 	scanf("%d%d",&M,&N);
-	int a;
-	for(int i = 0; i < N; i++){
+	int a, i;
+	for(i = 0; i < N; i++){
 		scanf("%d",&a);
 		search(a, M);
 	}
