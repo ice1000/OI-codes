@@ -1,5 +1,3 @@
-// 一直RE，我很困扰
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
