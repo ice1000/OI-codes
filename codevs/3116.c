@@ -1,3 +1,8 @@
+/*
+作者:千里冰封
+题目:p3116 高精度练习之加法
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
