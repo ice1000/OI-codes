@@ -10,8 +10,10 @@ void resort(char *a, int size) {
 		a[size - 1 - i] = c;
 	}
 }
-int max(int a, int b) {	return a > b ? a : b; }
-int main() {
+int max(int a, int b) {
+	return a > b ? a : b;
+}
+int main(int argc, char* argv[]) {
 	char *a, *b;
 	char c[700];
 	int i, mark = 0, a0 = 0, b0 = 0;
