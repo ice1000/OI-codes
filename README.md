@@ -8,8 +8,6 @@ coding for NOIP.
 #### [落谷题库传送门](http://www.luogu.org/)
 #### [Vijos题库传送门](https://vijos.org/)
 
-ACM只是兴趣，各位。
-
 ### 有趣的代码
 [让OJ直接mle的程序](./tools/mle.c)
 
