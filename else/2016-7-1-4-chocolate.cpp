@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     		kd = i ? i : 1;
 		if(md && nd && kd) break;
     	cnt *= 2;
-	}
+    }
 	if(m > 1)
 		f += md;
 	if(n > 1)
@@ -26,5 +26,5 @@ int main(int argc, char* argv[]) {
 	if(k > 1)
 		f += kd;
 	cout<<f<<endl;
-    return 0;
+	return 0;
 }
