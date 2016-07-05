@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 	init();
 	int n;
 	scanf("%i", &n);
-
+ 
 	return 0;
 }
 
