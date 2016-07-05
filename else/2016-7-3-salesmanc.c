@@ -10,11 +10,11 @@ int p[15];
  * @param p stores the passed towns.
  */
 void dfs(int n, int d, int s) {
-//  ¼ôÖ¦
+//  å‰ªæ
 	if(d + a[n][0] >= min) return ;
 //	printf("%d\n", d);
 	int i;
-//  ´ËÊ±d¾ø¶Ô±ÈminĞ¡£¨ÒòÎªÇ°ÃæÒÑ¾­¼ôÖ¦ÁË
+//  æ­¤æ—¶dç»å¯¹æ¯”minå°ï¼ˆå› ä¸ºå‰é¢å·²ç»å‰ªæäº†
 	if(s >= n) {
 		d += a[n][0];
 		min = d;
