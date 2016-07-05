@@ -2,4 +2,4 @@
 *.rar
 *.exe
 *.7z
-clion_work_space/*
+clion_work_space/*.cpp
