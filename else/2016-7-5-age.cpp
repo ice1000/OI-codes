@@ -13,10 +13,10 @@ int main(int argc, char* argv[]) {
 		scanf("%i", &t);
 		a[t] ++;
 	}
-	for(n = 0; n < 100; n++) {
+	for(n = 0; n <= 100; n++) {
 		if(a[n]) {
 			printf("%i ", n);
-			a[n]--;
+			a[n--]--;
 		}
 	}
 	return 0;
