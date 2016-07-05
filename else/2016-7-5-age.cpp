@@ -1,7 +1,3 @@
-//
-// Created by ice1000 on 2016/7/5.
-//
-
 #include <stdio.h>
 
 long long a[101];
@@ -30,3 +26,4 @@ void init() {
 	freopen("age.in", "r", stdin);
 	freopen("age.out", "w+", stdout);
 }
+
