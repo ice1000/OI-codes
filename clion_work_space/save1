@@ -1,0 +1,58 @@
+/*
+作者:千里冰封
+题目:p1073 家族
+*/
+
+#include <cstdio>
+
+int m, n, k;
+int dad[5005];
+
+int find(int i) {
+	if(dad[i] != i) dad[i] = find(dad[i]);
+	return dad[i];
+}
+
+void init() {
+	for (int i = 0; i < n + 2; ++i)
+		dad[i] = i;
+}
+
+int main(int argc, char *argv[]) {
+	// m 个人 n 对关系 k 个问题
+	scanf("%d %d %d", &m, &n, &k);
+	init();
+	for (int i = 0; i < n; ++i) {
+		int s, p;
+		scanf("%d %d", &s, &p);
+		dad[p] = s;
+		int a = find(p);
+		int b = find(s);
+		if(a != b) dad[a] = b;
+//		for (int j = 0; j < m; ++j)
+//			printf("dad[%d] = %d\n", j + 1, dad[j + 1]);
+//		printf("\n");
+	}
+// 	for (int i = 0; i < m; ++i)
+// 		printf("dad[%d] = %d\n", i + 1, dad[i + 1]);
+	for (int i = 0; i < k; ++i) {
+		int s, p;
+		scanf("%d %d", &s, &p);
+		int a = find(p);
+		int b = find(s);
+		if(a != b) dad[a] = b;
+		if(dad[s] == dad[p]) {
+			printf("Yes\n");
+		} else {
+			printf("No\n");
+		}
+	}
+	return 0;
+}
+
+/**
+ *
+ * 1 2 3 4 5
+ *
+ *
+*/
