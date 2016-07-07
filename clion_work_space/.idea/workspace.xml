@@ -12,9 +12,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2ce7fb78-772c-4113-8f8c-8d4164a6bed6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/save1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
     </list>
     <ignored path="clion_work_space.iws" />
@@ -39,16 +36,15 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+            <state relative-caret-position="500">
+              <caret line="44" column="17" selection-start-line="0" selection-start-column="0" selection-end-line="61" selection-end-column="5" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
                 <element signature="e#15#33#0" expanded="true" />
                 <element signature="e#116#164#0" expanded="true" />
                 <element signature="e#165#213#0" expanded="true" />
                 <element signature="e#215#301#0" expanded="true" />
-                <element signature="e#303#440#0" expanded="true" />
-                <element signature="e#932#1002#0" expanded="true" />
+                <element signature="e#782#852#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -260,8 +256,7 @@
             <element signature="e#116#164#0" expanded="true" />
             <element signature="e#165#213#0" expanded="true" />
             <element signature="e#215#301#0" expanded="true" />
-            <element signature="e#303#440#0" expanded="true" />
-            <element signature="e#932#1002#0" expanded="true" />
+            <element signature="e#782#852#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -284,8 +279,7 @@
             <element signature="e#116#164#0" expanded="true" />
             <element signature="e#165#213#0" expanded="true" />
             <element signature="e#215#301#0" expanded="true" />
-            <element signature="e#303#440#0" expanded="true" />
-            <element signature="e#932#1002#0" expanded="true" />
+            <element signature="e#782#852#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -308,8 +302,7 @@
             <element signature="e#116#164#0" expanded="true" />
             <element signature="e#165#213#0" expanded="true" />
             <element signature="e#215#301#0" expanded="true" />
-            <element signature="e#303#440#0" expanded="true" />
-            <element signature="e#932#1002#0" expanded="true" />
+            <element signature="e#782#852#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -509,16 +502,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+        <state relative-caret-position="500">
+          <caret line="44" column="17" selection-start-line="0" selection-start-column="0" selection-end-line="61" selection-end-column="5" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
             <element signature="e#15#33#0" expanded="true" />
             <element signature="e#116#164#0" expanded="true" />
             <element signature="e#165#213#0" expanded="true" />
             <element signature="e#215#301#0" expanded="true" />
-            <element signature="e#303#440#0" expanded="true" />
-            <element signature="e#932#1002#0" expanded="true" />
+            <element signature="e#782#852#0" expanded="true" />
           </folding>
         </state>
       </provider>
