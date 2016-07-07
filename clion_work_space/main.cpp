@@ -3,60 +3,56 @@
 */
 
 #include <stdio.h>
-#include <string.h>
 
-const int size = 1000 + 5;
+const int size = 500 + 5;
 
-int n, m, x;
-int t[size][size];
+int n, m, s, t;
+int min_distance[size][size];
+int max_distance[size][size];
 
 int min(int x, int y) {
 	return x > y ? y : x;
 }
+
+double min_with_double(double x, double y, double z) {
+	return x > y / z ? y / z : x;
+}
+
 int max(int x, int y) {
 	return x < y ? y : x;
 }
 
 void init() {
-	freopen("sword.in", "r", stdin);
-	freopen("sword.out", "w+", stdout);
+	freopen("village.in", "r", stdin);
+	freopen("village.out", "w+", stdout);
 }
 
 int main(int argc, char *argv[]) {
 	init();
-	int k, j;
-	int i;
-	memset(t, 1, sizeof(t));
-	scanf("%d %d %d", &n, &m, &x);
-	for (i = 0; i < m; ++i) {
+	int i, j, k;
+	scanf("%i %i", &n, &m);
+	for ( i = 0; i < m; i++ ) {
 		int a, b, l;
-		scanf("%d %d %d", &a, &b, &l);
-		t[a][b] = min(t[a][b], l);
-//		t[a][b] = l;
+		scanf("%i %i %i", &a, &b, &l);
+		min_distance[a][b] = l;
+		min_distance[b][a] = l;
+		max_distance[a][b] = l;
+		max_distance[b][a] = l;
 	}
-	for (k = 1; k <= n; ++k)
-		for (i = 1; i <= n; ++i)
-			for (j = 1; j <= n; ++j) {
-				t[i][j] = min(t[i][k] + t[k][j], t[i][j]);
+	for ( k = 1; k <= n; k++ )
+		for ( i = 1; i <= n; i++ )
+			for ( j = 1; j <= n; ++j ) {
+				min_distance[i][j] = min(
+						min_distance[i][j],
+						min_distance[i][k] + min_distance[k][j]
+				);
+				max_distance[i][j] = max(
+						max_distance[i][j],
+						max_distance[i][k] + max_distance[k][j]
+				);
 			}
-	k = 0;
+	scanf("%i %i", &s, &t);
+	int x, y;
 
-	for(i = 1; i <= n; i++)
-		k = max(k, t[i][x] + t[x][i]);
-	printf("%d", k);
 	return 0;
 }
-
-/*
-4 8 2
-1 2 4
-1 3 2
-1 4 7
-2 1 1
-2 3 5
-3 1 2
-3 4 4
-4 2 3
- * 
- * 
- * */
