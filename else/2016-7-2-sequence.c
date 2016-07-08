@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <memory.h>
 
-// a better way 2 do this
+// a better way 2 do this, but requires C++
 void mac(int& x, int y) {
 	x = x > y ? x : y;
 }

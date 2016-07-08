@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 	}
 	scanf("%d%d", &n, &k);
 	while(n && k) {
-		printf("%I64d\n", dp[n][k]);
+		printf("%lli\n", dp[n][k]);
 		scanf("%d%d", &n, &k);
 	}
 	return 0;
