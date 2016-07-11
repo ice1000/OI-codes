@@ -14,7 +14,8 @@ int main(int argc, char* argv[]) {
 			a -= a / 2;
 			if(!(a % 2)) a++;
 		}
-		printf("Case %i: %i", i, p);
+		// 艹，忘了换行，妈的全爆，我真是智障
+		printf("Case %i: %i\n", i, p);
 	}
 	return 0;
 }
