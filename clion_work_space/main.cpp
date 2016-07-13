@@ -1,78 +1,51 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
+typedef struct node {
+	char me;
+	node *next[26];
+} node;
 
-#include <cstdio>
-#include <algorithm>
-using namespace std;
+node *root;
 
-#define lson l , m , rt << 1
-#define rson m + 1 , r , rt << 1 | 1
-#define root 1 , N , 1
-#define LL long long
+char source[50010];
 
-const int maxn = 111111;
-LL add[maxn<<2];
-LL sum[maxn<<2];
-void PushUp(int rt) {
-	sum[rt] = sum[rt<<1] + sum[rt<<1|1];
-}
-void PushDown(int rt,int m) {
-	if (add[rt]) {
-		add[rt<<1] += add[rt];
-		add[rt<<1|1] += add[rt];
-		sum[rt<<1] += add[rt] * (m - (m >> 1));
-		sum[rt<<1|1] += add[rt] * (m >> 1);
-		add[rt] = 0;
-	}
-}
-void build(int l,int r,int rt) {
-	add[rt] = 0;
-	if (l == r) {
-		scanf("%lld",&sum[rt]);
-		return ;
-	}
-	int m = (l + r) >> 1;
-	build(lson);
-	build(rson);
-	PushUp(rt);
-}
-void update(int L,int R,int c,int l,int r,int rt) {
-	if (L <= l && r <= R) {
-		add[rt] += c;
-		sum[rt] += (LL)c * (r - l + 1);
-		return ;
-	}
-	PushDown(rt , r - l + 1);
-	int m = (l + r) >> 1;
-	if (L <= m) update(L , R , c , lson);
-	if (m < R) update(L , R , c , rson);
-	PushUp(rt);
-}
-LL query(int L,int R,int l,int r,int rt) {
-	if (L <= l && r <= R) {
-		return sum[rt];
-	}
-	PushDown(rt , r - l + 1);
-	int m = (l + r) >> 1;
-	LL ret = 0;
-	if (L <= m) ret += query(L , R , lson);
-	if (m < R) ret += query(L , R , rson);
-	return ret;
-}
-int main() {
-	int Q;
-	scanf("%d",&Q);
-	build(root);
-	while (Q --) {
-		char op[2];
-		int a , b , c;
-		scanf("%s",op);
-		if (op[0] == 'Q') {
-			scanf("%d%d",&a,&b);
-			printf("%lli\n",query(a , b ,root));
-		} else {
-			scanf("%d%d%d",&a,&b,&c);
-			update(a , b , c , root);
+void build (int index, node *this_root) {
+	if ( index >= strlen(source)) return;
+	int i, j, k;
+	for ( i = index; i < strlen(source); ++i ) {
+		if(!this_root->next[source[i] - 'a']) {
+			node *next = ( node * ) malloc(sizeof(node));
+			next->me = source[i];
+			this_root->next[source[i] - 'a'] = next;
+			build(i, next);
 		}
 	}
+}
+
+void output(node *now) {
+	int i;
+	for ( i = 0; i < 25; ++i ) {
+		printf("%c", now->me);
+		if(now->next[i]) {
+			output(now->next[i]);
+		}
+	}
+}
+
+int main (int argc, char *argv[]) {
+//	freopen("circle.in", "r", stdin);
+//	freopen("circle.out", "w+", stdout);
+	scanf("%s", source);
+	root->me = source[0];
+	build(0, root);
 	return 0;
 }
+
+/*
+3
+1 2 80
+2 3 80
+3 1 20
+ */
