@@ -5,3 +5,4 @@
 *.in
 *.out
 clion_work_space
+/clion_work_space/.idea/workspace.xml
