@@ -36,24 +36,23 @@ void merge(int p, int q, int size) {
 
 int main(int argc, char* argv[]) {
 	int m, n, i, j, a, b, c;
-	while (scanf("%d %d", &n, &m) != EOF) {
+	while (scanf("%d %d", &n, &m) != -1) {
 		for (i = 1; i <= n; i++) bcj[i] = i;
 		while (m--) {
 			scanf("%d", &c);
 			switch (c) {
-				case 3:
-					scanf("%d", &a);
-					jjfly fly = search(bcj[a], n);
-					printf("%d %d\n", fly.count, fly.total);
+				case 1:
+					scanf("%d %d", &a, &b);
+					merge(a, b, n);
 					break;
 				case 2:
 					scanf("%d %d", &a, &b);
 					bcj[a] = b;
 					fuck(n);
 					break;
-				case 1:
-					scanf("%d %d", &a, &b);
-					merge(a, b, n);
+				case 3:
+					scanf("%d", &a);
+					printf("%d %d\n", search(bcj[a], n).count, search(bcj[a], n).total);
 					break;
 			}
 		}
