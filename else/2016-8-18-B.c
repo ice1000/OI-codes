@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <memory.h>
+#include <string.h>
 
 int __abs(int x) {
 	return x > 0 ? x : -x;
