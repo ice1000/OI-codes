@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<queue>
+
 using namespace std;
 
 const int SIZE = 1000;
@@ -26,7 +27,6 @@ int main(int argc,char** argv){
     scanf("%d",&cnt);
     for(int i = 0; i < cnt; i++)
       scanf("%s",a[i]);
-    //hx,hy是出发点，lx,ly是目标位置
     scanf("%d%d%d%d",&hx,&hy,&lx,&ly);
     while(!q.empty())q.pop();
     node now;
@@ -55,7 +55,6 @@ int main(int argc,char** argv){
 	  q.push(next);
 	}
       }
-    //↓while的终止大括号
     }
   }
   for(int counter = 0; counter < total; counter ++){
