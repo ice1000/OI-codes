@@ -1,5 +1,5 @@
 @echo off
 git stage *
-git commit * -m "commit via s script"
+git commit * -m "commit via push.cmd"
 git push origin master
 pause
