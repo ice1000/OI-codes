@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 	double i, j;
 	scanf("%i", &n);
 	while (n--) {
-		scanf("%lf- %lf", &i, &j);
+		scanf("%lf %lf", &i, &j);
 		printf("%.3lf\n", (log(i) / log(j)));
 	}
 	return 0;
@@ -20,4 +20,5 @@ int main(int argc, char *argv[]) {
 /*
 4 1 2 3 4
  */
+
 
