@@ -1,34 +1,9 @@
 # About OI-codes
 coding for NOIP.
 
-## 各种传送门
-+ [成外OJ 成都外国语学校自己的OJ](http://www.cwoj.tk/)
-+ [openjudge题库传送门](http://noi.openjudge.cn/)
-+ [CodeVS题库传送门](http://www.codevs.cn/)
-+ [落谷题库传送门](http://www.luogu.org/)
-+ [Vijos题库传送门](https://vijos.org/)
 
-## 有趣的代码
-[让OJ直接mle的程序](./tools/mle.c)
+每个文件对应一个OJ，里面是按照URL或者题号分类的题。
 
+欢迎吐槽欢迎查错。
 
-题目框架——
-
-```c
-/*
-作者:千里冰封
-题目:
-*/
-
-#include <stdio.h>
-#include <math.h>
-
-int main(int argc, char* argv[]) {
-    int a, b;
-    scanf("%i%i", &a, &b);
-    return 0;
-}
-```
-祝全世界OIer都这样：<br/>
-![](./error.png)<br/>
-![](./error2.png)
+部分文件会有后缀，表示使用的算法/提交情况等。比如1234-dp.c表示使用dp的做法，4321-TLE.c表示这份代码交上去TLE了。
