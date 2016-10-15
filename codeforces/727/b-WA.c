@@ -32,9 +32,7 @@ int main(int argc, char *argv[]) {
 //        printf("|%i|\n", i);
       }
       res += temp;
-      mark = 0;
-      temp = 0;
-      cnt = 0;
+      mark = temp = cnt = 0;
       tens = 1;
     }
   }
