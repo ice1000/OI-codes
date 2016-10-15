@@ -1,8 +1,21 @@
+
+# Archive files #
 *.zip
 *.rar
-*.exe
 *.7z
+
+# Compile output #
+*.exe
+*.obj
+*.o
+
+# Input and output files #
 *.in
 *.out
+
+# Emacs auto-backup #
 *.c~
 *.cpp~
+*.in~
+*.out~
+
