@@ -33,8 +33,9 @@ int main(void){
     j--;
   }
   printf("start dush:%d\n",cnt);
-  for(int p = 0; p < MAXN; p++){
-    for(int q = 0; q < MAXM; q++)
+  int p, q;
+  for(p = 0; p < MAXN; p++){
+    for(q = 0; q < MAXM; q++)
       printf("%d ",a[p][q]);
     puts("\n");	
   }

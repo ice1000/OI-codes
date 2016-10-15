@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include <stdio.h>
 
 int x[205], y[205], a[40005], b[40005];
 

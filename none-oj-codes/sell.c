@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include <stdio.h>
 
 int v[2005];
 int path[2005][2005];
