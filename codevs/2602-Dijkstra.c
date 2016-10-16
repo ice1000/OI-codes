@@ -1,6 +1,6 @@
 /*
-作者:千里冰封
-题目:p2602 最短路径问题
+  作者:千里冰封
+  题目:p2602 最短路径问题
 */
 
 #include <stdio.h>
@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define INF 0xffffff
+#define INF 0xfffffff
 
 double a[105][105], d[105];
 int x[105], y[105], v[105];
@@ -26,7 +26,7 @@ int main (int argc, char *argv[]) {
   scanf("%i", &n);
   for (i = 1; i <= n; ++i) {
     for (j = 1; j <= n; ++j) {
-      a[i][j] = INF;
+      a[i][j] = i == j ? 0 :INF;
     }
   }
   for (i = 1; i <= n; ++i) {
@@ -37,8 +37,9 @@ int main (int argc, char *argv[]) {
     scanf("%i %i", &j, &k);
     a[k][j] = a[j][k] = distance(j, k);
   }
-	/* Dijkstra */
+  /* Dijkstra */
   scanf("%i", &i);
+
   for (j = 1; j <= n; ++j) {
     d[j] = a[i][j];
     v[j] = 0;
@@ -46,40 +47,41 @@ int main (int argc, char *argv[]) {
   /* d = a[i]; */
   j = n;
 
-  while (j--) {
-    o = 1;
+  while (--j) {
+    o = 2;
+    ++v[i];
     for (k = 1; k <= n; ++k) {
-     if (!v[k] && d[k] < d[o]) {
-       o = k;
-     }
-     ++v[o];
-     for (k = 1; k <= n; ++k) {
-       if (d[o] + a[o][k] < d[k]) {
-         d[k] = d[o] + a[o][k];
-       }
-     }
+      if (!v[k] && d[k] < d[o]) {
+        o = k;
+      }
+      ++v[o];
+      for (k = 1; k <= n; ++k) {
+        if (a[o][k] < INF && d[o] + a[o][k] < d[k]) {
+          d[k] = d[o] + a[o][k];
+        }
+      }
     }
   }
   for (j = 1; j <= n; ++j) {
-  	printf("|%.2lf|", d[j]);
+//    printf("|%.2lf|", d[j]);
   }
   scanf("%i", &i);
   printf("%.2lf\n", d[i]);
   return 0;
 }
 /*
-5
-0 0
-2 0
-2 2
-0 2
-3 1
-5
-1 2
-1 3
-1 4
-2 5
-3 5
-1 5
+  5
+  0 0
+  2 0
+  2 2
+  0 2
+  3 1
+  5
+  1 2
+  1 3
+  1 4
+  2 5
+  3 5
+  1 5
 */
 

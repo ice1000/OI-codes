@@ -3,15 +3,21 @@
 
 #define size 200005
 
-// md 尼玛这题是差分约束
-// 我不会啊啊啊啊
+// 并查集
 
-int c[size], l[size], r[size];
-bool shit[size][size];
-int n, m, k;
+int c[size], l[size], r[size], uset[size];
+int n, m, k, tot;
+
+int find(int a) {
+	return uset[a] == a ? a : find(uset[a]);
+}
+
+void merge(int x, int y) {
+	if (find(x) != find(y)) uset[x] = y, ++tot;
+}
 
 int main(int argc, char *argv[]) {
-	int i, j, x, y, z, tot = 0;
+	int i, j, x, y, z;
 	scanf("%i %i %i", &n, &m, &k);
 	for (i = 0; i < n; ++i) scanf("%i", &c[i]);
 	for (i = j = 0; j < m; ++j) {
@@ -24,10 +30,9 @@ int main(int argc, char *argv[]) {
 	}
 	m = i;
 	for (i = 0; i < m; ++i) {
-		if (!shit[c[l[i]]][c[r[i]]]) {
-			++shit[c[l[i]]][c[r[i]]], ++shit[c[r[i]]][c[l[i]]];
-			++tot;
-		}
+		merge(l[i], r[i]);
 	}
+	printf("%i", tot);
 	return 0;
 }
+
