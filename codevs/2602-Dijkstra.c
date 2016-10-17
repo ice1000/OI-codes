@@ -62,9 +62,9 @@ int main (int argc, char *argv[]) {
       }
     }
   }
-  for (j = 1; j <= n; ++j) {
-//    printf("|%.2lf|", d[j]);
-  }
+  /* for (j = 1; j <= n; ++j) { */
+  /*   printf("|%.2lf|", d[j]); */
+  /* } */
   scanf("%i", &i);
   printf("%.2lf\n", d[i]);
   return 0;
