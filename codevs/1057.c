@@ -1,3 +1,8 @@
+/*
+作者:千里冰封
+题目:p1057 津津的储蓄计划
+*/
+
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
