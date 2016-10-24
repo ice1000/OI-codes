@@ -8,8 +8,8 @@ using std::queue;
 #define INF 0xfffffff
 #define squared(x) ((x) * (x))
 
-double a[105][105], d[105];
-int x[105], y[105], inq[105], next[105], head[105];
+double a[1005][1005], d[1005];
+int x[1005], y[1005], inq[1005], head[1005];
 double distance (int a, int b) {
   return sqrt(squared(x[a] - x[b]) + squared(y[a] - y[b]));
 }
@@ -17,16 +17,16 @@ double distance (int a, int b) {
 struct Edge {
   int to, next;
   double w;
-  Edge() { }
-  Edge(int _to, double _w, int _next): to(_to), w(_w), next(_next) { }
-  ~Edge() { }
+  Edge(): next(-1) { }
+  Edge(int _to, double _w, int _next = -1): to(_to), w(_w), next(_next) { }
 } es[1001];
 
 int main (int argc, char *argv[]) {
   int n, m, i, j, k, l, fr, en, u, v;
+  double w;
   queue<int> *q = new queue<int>();
   memset(head, -1, sizeof(head));
-  memset(next, -1, sizeof(next));
+  memset(inq, 0, sizeof(inq));
   scanf("%i", &n);
   for (i = 1; i <= n; ++i) scanf("%i %i", &x[i], &y[i]), d[i] = INF;
   scanf("%i", &m);
@@ -45,19 +45,16 @@ int main (int argc, char *argv[]) {
   q->push(fr);
   ++inq[fr];
   while (!q->empty()) {
-    i = q->front();
-    q->pop();
-    inq[i] = 0;
-    for (j = head[i]; j != -1; j = next[j]) {
+    i = q->front(), q->pop();
+    for (j = head[i]; ~j; j = es[j].next) {
       v = es[j].to;
-      if (d[i] + es[j].w < d[v]) {
-        d[v] = d[i] + es[j].w;
-        if (!inq[v]) {
-          ++inq[v];
-          q->push(v);
-        }
+      w = es[j].w;
+      if (d[i] + w < d[v]) {
+        d[v] = d[i] + w;
+        if (!inq[v]) ++inq[v], q->push(v);
       }
     }
+    inq[i] = 0;
   }
   printf("%.2lf\n", d[en]);
   return 0;
