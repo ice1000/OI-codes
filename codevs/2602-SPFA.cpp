@@ -4,60 +4,55 @@
 */
 
 #include <bits/stdc++.h>
-using std::queue;
 #define INF 0xfffffff
 #define squared(x) ((x) * (x))
+#define ms(x, v) memset(x, v, sizeof(x))
 
-double a[105][105], d[105];
-int x[105], y[105], inq[105], next[105], head[105];
+double d[105];
+int x[105], y[105], inq[105], cnt[105];
 double distance (int a, int b) {
   return sqrt(squared(x[a] - x[b]) + squared(y[a] - y[b]));
 }
 
 struct Edge {
-  int to, next;
+  int to;
   double w;
-  Edge() { }
-  Edge(int _to, double _w, int _next): to(_to), w(_w), next(_next) { }
-  ~Edge() { }
-} es[1001];
+  Edge(int _to = 0, double _w = 0): to(_to), w(_w) { }
+} e;
 
 int main (int argc, char *argv[]) {
   int n, m, i, j, k, l, fr, en, u, v;
-  queue<int> *q = new queue<int>();
-  memset(head, -1, sizeof(head));
-  memset(next, -1, sizeof(next));
+  std::queue<int> *q = new std::queue<int>();
+  std::vector<Edge> vec[105];
+  ms(inq, 0), ms(cnt, 0);
   scanf("%i", &n);
   for (i = 1; i <= n; ++i) scanf("%i %i", &x[i], &y[i]), d[i] = INF;
   scanf("%i", &m);
   for (l = i = 0; i < m; ++i) {
     scanf("%i %i", &j, &k);
-    es[l] = *new Edge(k, distance(j, k), head[j]);
-    head[j] = l++;
-    es[l] = *new Edge(j, distance(k, j), head[k]);
-    head[k] = l++;
+    vec[j].push_back(*new Edge(k, distance(j, k)));
+    vec[k].push_back(*new Edge(j, distance(k, j)));
   }
   /* SPFA */
   scanf("%i %i", &fr, &en);
-  inq[fr] = 1;
-  d[fr] = 0;
+  inq[fr] = 1, d[fr] = 0;
   while (!q->empty()) q->pop();
   q->push(fr);
   ++inq[fr];
   while (!q->empty()) {
-    i = q->front();
-    q->pop();
-    inq[i] = 0;
-    for (j = head[i]; j != -1; j = next[j]) {
-      v = es[j].to;
-      if (d[i] + es[j].w < d[v]) {
-        d[v] = d[i] + es[j].w;
-        if (!inq[v]) {
-          ++inq[v];
-          q->push(v);
+    i = q->front(), q->pop();
+    if (++cnt[i] > n) break;
+    for (j = 0; j < vec[i].size(); ++j) {
+      e = vec[i][j];
+      if (d[e.to] > d[i] + e.w) {
+        d[e.to] = d[i] + e.w;
+        if (!inq[e.to]) {
+          ++inq[e.to];
+          q->push(e.to);
         }
       }
     }
+    inq[i] = 0;
   }
   printf("%.2lf\n", d[en]);
   return 0;
@@ -77,3 +72,4 @@ int main (int argc, char *argv[]) {
 3 5
 1 5
 */
+
