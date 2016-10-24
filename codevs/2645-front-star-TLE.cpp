@@ -27,7 +27,7 @@ inline bool spfa(int s) {
 				if (!inq[k]) {
 					inq[k] = true;
 					q.push(k);
-					if (cnt[k] > n) return true;
+					if (++cnt[k] > n) return true;
 				}
 			}
 		}
