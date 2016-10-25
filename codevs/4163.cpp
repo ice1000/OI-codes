@@ -1,3 +1,8 @@
+/*
+作者:千里冰封
+题目:p4163 hzwer与逆序对
+*/
+
 #include <stdio.h>
 #include <algorithm>
 #define size 1000010
@@ -44,4 +49,5 @@ int main(int argc, const char *argv[]) {
   printf("%lli", t);
   return 0;
 }
+
 
