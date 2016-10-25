@@ -1,8 +1,3 @@
-/*
-作者:千里冰封
-题目:p1688 求逆序对
-*/
-
 #include <stdio.h>
 #define size 100001
 #define lowbit(x) ((x) & (-(x)))
@@ -32,4 +27,6 @@ int main(int argc, const char *argv[]) {
 /*
 4
 3 2 3 2
+
+
 */
