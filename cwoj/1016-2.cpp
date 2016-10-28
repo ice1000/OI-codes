@@ -6,7 +6,8 @@
 #define INF 0xfffffff
 #define size 5001
 
-int head[size], next[size], value[size], target[size], dis[size], visit[size], inq[size];
+int head[size], next[size], value[size], target[size], dis[size], visit[size],
+    inq[size];
 int m, n;
 
 inline bool spfa(int s) {
