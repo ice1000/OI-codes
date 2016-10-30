@@ -1,8 +1,6 @@
-
-
 #include <stdio.h>
 
-#define size 0xfffff
+const int size = 0xfffff;
 int uset[size];
 
 int find(int n) {
@@ -20,7 +18,7 @@ int main(int argc, char *argv[]) {
   while (++d) {
     c = 0;
     scanf("%i %i", &n, &m);
-    if (!m && !n) break;
+    if (!m and !n) break;
     for (i = 1; i <= n; ++i) uset[i] = i;
     for (i = 1; i <= m; ++i) {
       scanf("%i %i", &a, &b);
@@ -32,3 +30,4 @@ int main(int argc, char *argv[]) {
   }
   return 0;
 }
+
