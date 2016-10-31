@@ -1,16 +1,11 @@
-/*
-作者:千里冰封
-题目:p1010 过河卒
-*/
-
 #include <stdio.h>
 
 int xx, yy, hx, hy;
 int cnt;
 int a[1000][1000];
-void dfs(int x, int y);
+void dfs(int, int);
 
-int main(int argc, char* argv[]){
+int main(int argc, const char* argv[]){
 	scanf("%i %i %i %i", &xx, &yy, &hx, &hy);
 	a[hx][hy] = 1;
 
@@ -18,7 +13,7 @@ int main(int argc, char* argv[]){
 	a[hx + 1][hy - 2] = 1;
 	a[hx - 1][hy + 2] = 1;
 	a[hx - 1][hy - 2] = 1;
-	
+
 	a[hx + 2][hy + 1] = 1;
 	a[hx + 2][hy - 1] = 1;
 	a[hx - 2][hy - 1] = 1;
