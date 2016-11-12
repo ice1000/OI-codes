@@ -27,8 +27,6 @@ void dfs(number idx, string s) {
 }
 
 int main(int argc, const char *argv[]) {
-	freopen("pailn.in", "r", stdin);
-	freopen("pailn.out", "w", stdout);
 	std::cin >> str;
 	dfs(0x00ll, "");
 	std::sort(deep_dark_fantasy.begin(), deep_dark_fantasy.end());
