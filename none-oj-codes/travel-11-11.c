@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <set>
 
 #define ms(x, y) (memset(x, y, sizeof(x)))
 #define size 100010 << 1
