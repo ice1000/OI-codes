@@ -32,7 +32,7 @@ int main() {
 	std::cin>>a>>n>>m;
 	for(i = 0; i < strlen(a); i++)
 		aa = (aa * 10 + a[i] - '0') % m;
-	if(n == 1) {	
+	if(n == 1) {
 		std::cout<<a<<' '<<fast_pow(aa, 2, m);
 		return 0;
 	}
