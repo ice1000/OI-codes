@@ -1,34 +1,38 @@
 /*
-×÷Õß:Ç§Àï±ù·â
-ÌâÄ¿:p1080 Ïß¶ÎÊ÷Á·Ï°
+ä½œè€…:åƒé‡Œå†°å°
+é¢˜ç›®:p1080 çº¿æ®µæ ‘ç»ƒä¹ 
 */
 
 #include <stdio.h>
 #define lowbit(x) ((x) & (-(x)))
+
 int a[100001], n;
+
 int sum(int n) {
-  return n ? a[n] + sum(n - lowbit(n)) : 0;
+	return n ? a[n] + sum(n - lowbit(n)) : 0;
 }
+
 int add(int u, int v) {
-  if (u <= n) {
-    a[u] += v;
-    add(u + lowbit(u), v);
-  }
+	if (u <= n) {
+		a[u] += v;
+		add(u + lowbit(u), v);
+	}
 }
+
 int main(int argc, char *argv[]) {
-  int i, j, m, k;
-  scanf("%i", &n);
-  for (i = 1; i <= n; ++i) {
-    scanf("%i", &j);
-    add(i, j);
-  }
-  scanf("%i", &m);
-  while (m--) {
-    scanf("%i %i %i", &i, &j, &k);
-    if (i == 1) add(j, k);
-    else printf("%i\n", sum(k) - sum(j - 1));
-  }
-  return 0;
+	int i, j, m, k;
+	scanf("%i", &n);
+	for (i = 1; i <= n; ++i) {
+		scanf("%i", &j);
+		add(i, j);
+	}
+	scanf("%i", &m);
+	while (m--) {
+		scanf("%i %i %i", &i, &j, &k);
+		if (i == 1) add(j, k);
+		else printf("%i\n", sum(k) - sum(j - 1));
+	}
+	return 0;
 }
 
 /*

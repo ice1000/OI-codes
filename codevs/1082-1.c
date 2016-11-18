@@ -12,7 +12,7 @@
 int tree1[size], tree2[size], num[size], n, q;
 
 void add(int *tree, int idx, int value) {
-  if (idx < n) tree[idx] += value, add(tree, idx + lowbit(idx), value);
+  if (idx <= n) tree[idx] += value, add(tree, idx + lowbit(idx), value);
 }
 
 int sum(int *tree, int idx) {
@@ -24,8 +24,7 @@ int main(int argc, const char *argv[]) {
 #define int long long
   int i, type, a, b;
   scanf("%lli", &n);
-  ++n;
-  for (i = 1; i < n; ++i) {
+  for (i = 1; i <= n; ++i) {
     scanf("%lli", &num[i]);
     add(tree1, i, num[i] - num[i - 1]);
     add(tree2, i, (i - 1) * (num[i] - num[i - 1]));
