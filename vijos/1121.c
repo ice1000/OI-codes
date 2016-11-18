@@ -5,7 +5,7 @@ int cnt;
 int a[1000][1000];
 void dfs(int, int);
 
-int main(int argc, const char* argv[]){
+int main(int argc, const char* argv[]) {
 	scanf("%i %i %i %i", &xx, &yy, &hx, &hy);
 	a[hx][hy] = 1;
 
