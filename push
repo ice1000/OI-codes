@@ -1,0 +1,7 @@
+#!/bin/sh
+
+git stage *
+git commit * -m "commit via push"
+git gc
+git push origin master
+
