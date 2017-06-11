@@ -30,6 +30,8 @@ while :: V -> (Integer -> Bool) -> M () -> M ()
 while = undefined
 
 a += b = error "todo: (+=)"
+
 a -= b = error "todo: (-=)"
+
 a *= b = error "todo: (*=)"
 
