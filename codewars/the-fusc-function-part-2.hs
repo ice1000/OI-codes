@@ -18,4 +18,4 @@ fuscBTFS m n = case M.lookup n m of
             (mmm, v1 + v2)
     in (M.insert n v mp, v)
 --
-    
+
