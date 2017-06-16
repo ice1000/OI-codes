@@ -70,7 +70,29 @@ greatestList (Greatest u s) = case u s of
 -- you write the functions which witness this last isomorphism
 -- generally for any functor?
 greatestLeast :: Functor f => Greatest f -> Least f
-greatestLeast = error "todo"
+greatestLeast = intermediate2L . g2Intermediate
 
 leastGreatest :: Functor f => Least f -> Greatest f
-leastGreatest = error "todo"
+leastGreatest = intermediate2G . l2Intermediate
+
+newtype Intermediate f = Intermediate {
+  unIntermediate :: f (Intermediate f)
+  }
+--
+
+g2Intermediate :: Functor f => Greatest f -> Intermediate f
+g2Intermediate (Greatest f a) = ana f a
+  where ana f = Intermediate . (ana f <$>) . f
+--
+
+intermediate2L :: Functor f => Intermediate f -> Least f
+intermediate2L x = Least $ \f -> cata f x
+  where cata f = f . (cata f <$>) . unIntermediate
+--
+
+l2Intermediate :: Least f -> Intermediate f
+l2Intermediate (Least k) = k Intermediate
+
+intermediate2G :: Intermediate f -> Greatest f
+intermediate2G = Greatest unIntermediate
+
