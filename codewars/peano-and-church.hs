@@ -8,6 +8,9 @@
 module PC where
 
 import Data.List
+import Data.Maybe
+
+import Prelude hiding (pred)
 
 type ISO a b = (a -> b, b -> a)
 -- See https://www.codewars.com/kata/isomorphism
@@ -63,13 +66,13 @@ instance {-# OVERLAPPABLE #-} Nat n => Ord n where
 --
 
 instance {-# OVERLAPPABLE #-} Nat n => Num n where
-  abs = id
-  signum = nat zero (const 1)
-  fromInteger 0 = zero
+  abs                   = id
+  signum                = nat zero (const 1)
+  fromInteger 0         = zero
   fromInteger n | n > 0 = successor $ fromInteger (n - 1)
-  (+) = plus
-  (*) = mult
-  (-) = minus
+  (+)                   = plus
+  (*)                   = mult
+  (-)                   = minus
 --
 
 -- We can encode Natrual Number directly as Algebraic Data Type(ADT).
@@ -77,19 +80,23 @@ data Peano = O | S Peano deriving (Show, Eq, Ord)
 
 -- Remember, 0 - x = 0 for all x.
 instance Nat Peano where
-  zero           = O
-  successor      = S
-  p `plus`  O    = p
-  p `plus` (S q) = (S p) `plus` q
-  _ `mult`  O    = O
-  O `mult`  _    = O
-  p `mult` (S q) = plus p $ p `mult` q
-  p `minus` O    = p
-  O `minus` _    = O
+  zero              = O
+  successor         = S
+  nat d _ O         = d
+  nat _ f (S s)     = f s
+  iter d _ O        = d
+  iter d f (S s)    = iter (f d) f s
+  p `plus`  O       = p
+  p `plus` (S q)    = (S p) `plus` q
+  _ `mult`  O       = O
+  O `mult`  _       = O
+  p `mult` (S q)    = plus p $ p `mult` q
+  p `minus` O       = p
+  O `minus` _       = O
   minus (S p) (S q) = minus p q
-  O `pow`   _    = O
-  _ `pow`   O    = S O
-  p `pow`  (S q) = mult p $ p `pow` q
+  _ `pow`   O       = S O
+  O `pow`   _       = O
+  p `pow`  (S q)    = mult p $ p `pow` q
 --
 
 -- Peano is very similar to a basic data type in Haskell - List!
@@ -104,40 +111,71 @@ instance Nat Peano where
 -- Dont do that. You wont learn anything.
 -- Try to use operation specific to list.
 instance Nat [()] where
-  zero         = []
-  successor    = (() :)
-  plus         = (++)
-  [] `minus` _ = []
-  a `minus` [] = a
-  minus (_ : a) (_ : b) = minus a b
-  [] `mult` _  = []
-  _ `mult` []  = []
-  a `mult` b   = plus a $ mult a $ tail b
-  [] `pow` _   = []
-  _ `pow` []   = [()]
-  a `pow` b    = mult a $ pow a $ tail b
+  zero                = []
+  successor           = (() :)
+  nat d _ []          = d
+  nat _ f (_: a)      = f a
+  iter d _ []         = d
+  iter d f (_: a)     = iter (f d) f a
+  plus                = (++)
+  [] `minus` _        = []
+  a `minus` []        = a
+  minus (_: a) (_: b) = minus a b
+  [] `mult` _         = []
+  _ `mult` []         = []
+  a `mult` b          = plus a $ mult a $ tail b
+  _ `pow` []          = [()]
+  [] `pow` _          = []
+  a `pow` b           = mult a $ pow a $ tail b
 --
 
 -- Instead of defining Nat from zero, successor (and get Peano),
 -- We can define it from Pattern Matching
 newtype Scott = Scott { runScott :: forall a. a -> (Scott -> a) -> a }
+
 instance Nat Scott where
+  zero               = Scott const
+  successor s        = Scott $ \_ f -> f s
+  nat d f (Scott s)  = s d f
+  iter d f (Scott s) = s d $ iter (f d) f
   -- Other operation on Scott numeral is sort of boring,
   -- So we implement it using operation on Peano.
   -- You shouldnt do this - I had handled all the boring case for you.
-  plus = substR (liftISO2 isoP) plus
-  minus = substR (liftISO2 isoP) minus
-  mult = substR (liftISO2 isoP) mult
-  pow = substR (liftISO2 isoP) pow
+  plus               = substR (liftISO2 isoP) plus
+  minus              = substR (liftISO2 isoP) minus
+  mult               = substR (liftISO2 isoP) mult
+  pow                = substR (liftISO2 isoP) pow
 --
 
 -- Or from induction!
 newtype Church = Church { runChurch :: forall a. (a -> a) -> a -> a }
 
+--
+            ------------------- 666 -------------------
+    -----------world-peace----- 666 -----intelligence-----------
+  ----------------------------- 666 ------------------------------
+-------------------smart!!----- 666 -----power!!--------------------
+pred (Church n) = if n (+ 1) 1 /= 1
+  then Just $ Church $ \f x -> n (\h g -> g $ h f) (\_ -> x) id
+  else Nothing
+-------------------smart!!----- 666 -----power!!--------------------
+  ----------------------------- 666 ------------------------------
+    -----------world-peace----- 666 -----intelligence-----------
+            ------------------- 666 -------------------
+--
+
 instance Nat Church where
-  -- Try to implement the calculation (except minus) in the primitive way.
-  -- Implement them by constructing Church explicitly.
-  -- So plus should not use successor,
-  -- mult should not use plus,
-  -- exp should not use mult.
+  zero                        = Church $ \_ -> id
+  successor (Church f)        = Church $ \x -> f x . x
+  nat d f c@(Church g)        = fromMaybe d $ f <$> pred c
+  iter d f (Church g)         = g f d
+  plus  (Church f) (Church g) = Church $ \x -> f x . g x
+  mult  (Church f) (Church g) = Church $ f . g
+  pow   (Church f) (Church g) = Church $ g f
+  minus     f      (Church g) = g (\x -> fromMaybe zero $ pred x) f
+-- Try to implement the calculation (except minus) in the primitive way.
+-- Implement them by constructing Church explicitly.
+-- So plus should not use successor,
+-- mult should not use plus,
+-- exp should not use mult.
 
