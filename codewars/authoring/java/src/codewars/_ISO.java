@@ -155,10 +155,8 @@ abstract class ISO<A, B> {
 	 */
 	@SuppressWarnings("ConstantConditions")
 	static <A, B> ISO<A, B> isoUnOptional(ISO<Optional<A>, Optional<B>> iso) {
-		return iso(a -> iso.fw(Optional.of(a))
-						.orElseGet(() -> iso.fw(Optional.empty()).get()),
-				b -> iso.bw(Optional.of(b))
-						.orElseGet(() -> iso.bw(Optional.empty()).get()));
+		return iso(a -> iso.fw(Optional.of(a)).orElseGet(() -> iso.fw(Optional.empty()).get()),
+				   b -> iso.bw(Optional.of(b)).orElseGet(() -> iso.bw(Optional.empty()).get()));
 	}
 
 	static <A, B, C, D> ISO<Function<A, C>, Function<B, D>> isoFunc(ISO<A, B> ab, ISO<C, D> cd) {
