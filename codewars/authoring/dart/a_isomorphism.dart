@@ -20,11 +20,12 @@ class ISO<A, B> {
 
 abstract class Either<L, R> {
   T pm<T>(Function lt, Function rt);
-  dynamic get();
   static _Left<L, R> left<L, R>(L l) => new _Left(l);
   static _Right<L, R> right<L, R>(R r) => new _Right(r);
   static isLeft(Either e) => e is _Left;
   static isRight(Either e) => e is _Right;
+  L getLeft();
+  R getRight();
 }
 
 class _Left<L, R> extends Either<L, R> {
@@ -33,6 +34,8 @@ class _Left<L, R> extends Either<L, R> {
   @override dynamic get() => _l;
   @override T pm<T>(Function lt, Function rt) => lt(_l);
   @override bool operator ==(Object rhs) => (rhs as Either<L, R>).pm((o) => _l == o, (rr) => false);
+  @override L getLeft() => _l;
+  @override R getRight() => throw _l;
 }
 
 class _Right<L, R> extends Either<L, R> {
@@ -41,6 +44,8 @@ class _Right<L, R> extends Either<L, R> {
   @override dynamic get() => _r;
   @override T pm<T>(Function lt, Function rt) => rt(_r);
   @override bool operator ==(Object rhs) => (rhs as Either<L, R>).pm((ll) => false, (o) => _r == o);
+  @override L getLeft() => throw _r;
+  @override R getRight() => _r;
 }
 
 class Tuple<A, B> {
@@ -142,10 +147,10 @@ ISO<Function, Function> isoFunc<A, B, C, D>(final ISO<A, B> ab, final ISO<C, D> 
 /// And we have isomorphism on isomorphism!
 ISO<ISO<A, B>, ISO<B, A>> isoSymm<A, B>() => new ISO(symm, symm);
 
-///   *** MENTION ****   ///
-///   paste your code    ///
-///   from `isomorphism` ///
-///   *** MENTION ****   ///
+///  *** MENTION ***  ///
+///  paste your code  ///
+/// from isomorphism  ///
+///  *** MENTION ***  ///
 
 /// Sometimes, we can treat a Type as a Number:
 /// if a Type t has n distinct value, it's Number is n.

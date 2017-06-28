@@ -67,11 +67,9 @@ main() {
       expect(subStL(bISO)(true), isFalse);
       expect(subStL(bISO)(false), isTrue);
       expect(subStL(badISO)(true), isFalse);
-      try {
-        subStL(badISO)(false);
-      } catch (e) {
-        expect(e, "why");
-      }
+      var err;
+      try { subStL(badISO)(false); } catch (e) { err = e; }
+      expect(err, "why");
     });
     test("isoEither", () {
       expect(subStL(isoEither(isoBoolNot(), tISO))(Either.left(true)), equals(Either.left(false)));
@@ -79,11 +77,11 @@ main() {
       expect(subStL(isoEither(isoBoolNot(), tISO))(Either.right(true)), equals(Either.right(MEOW)));
     });
     test("isoEU", () {
-      expect(lrl(isoEU())(Either.left([])).get(), equals([]));
-      expect(lrl(isoEU())(Either.left(lu)).get(), equals(lu));
-      expect(lrl(isoEU())(Either.right(null)).get(), isNull);
-      expect(rlr(isoEU())(Either.left([])).get(), equals([]));
-      expect(rlr(isoEU())(Either.left(lu)).get(), equals(lu));
+      expect(lrl(isoEU())(Either.left([])).getLeft(), equals([]));
+      expect(lrl(isoEU())(Either.left(lu)).getLeft(), equals(lu));
+      expect(lrl(isoEU())(Either.right(null)).getRight(), isNull);
+      expect(rlr(isoEU())(Either.left([])).getLeft(), equals([]));
+      expect(rlr(isoEU())(Either.left(lu)).getLeft(), equals(lu));
       expect(Either.isLeft(subStL(isoEU())(Either.right(null))), isTrue);
     });
     test("assoc", () {
