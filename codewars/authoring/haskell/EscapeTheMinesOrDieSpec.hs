@@ -82,17 +82,17 @@ main = do
         solve map (0, 0) (0, 6) `shouldBe` Nothing
   
   hspec $ do
-    describe "Should work with complex path (7x7 map)" $ do
+    describe "Should work with complex path (7x6 map)" $ do
       let map = unmap ["   ##  "
                       ,"## #  #"
                       ,"   # ##"
-                      ," # #  #"
-                      ," # #  #"
+                      ," # # ##"
+                      ," # # ##"
                       ,"#    # "]
   
       it "Should return the right moves" $ do
         solve map (0, 0) (0, 6) `shouldBe`
-          (Just [D, D, R, R, R, R, R, D, D, L, D, L, U, L, L, D, L, D])
+          (Just [D, D, R, R, R, R, R, D, D, L, L, L, L, L, D, L, D])
   
   hspec $ do
     describe "Should work with complex path (12x12 map)" $ do
@@ -106,7 +106,7 @@ main = do
                       ," ###  #     "
                       ,"   ## #### #"
                       ," # #  #  #  "
-                      ," # #  #    #"
+                      ," # #  # #  #"
                       ,"#    #  #   "]
       it "Should work" $ do
         solve map (0, 0) (11, 11) `shouldBe`
