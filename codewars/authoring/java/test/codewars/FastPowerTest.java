@@ -72,6 +72,8 @@ public class FastPowerTest {
 				Files.lines(new File("/home/codewarrior/solution.txt").toPath()).forEach(str -> {
 								assertFalse(str.contains("Integer"));
 								assertFalse(str.contains("Big"));
+								assertFalse(str.contains("char"));
+								assertFalse(str.contains("byte"));
 								assertFalse(str.contains("math"));
 								assertFalse(str.contains("\""));
 								assertFalse(str.contains("\'"));

@@ -6,7 +6,7 @@ package codewars;
  * @author ice1000
  */
 public class FastPower {
-	/** When it's true, the log will be printed. */
+	/** When it is true, the log will be printed. */
 	public static final boolean DEBUG = false;
 
 	private static long plus(long a, long b, long m) {
