@@ -8,12 +8,11 @@ fastCore = (a, b, m) => {
 		if (s >= a && s >= b) return s % m;
 		if (a >= m && a > m - b) return fastCore(a - m, b, m);
 		if (b >= m && b > m - a) return fastCore(a, b - m, m);
-		return s;
+		return a - m + b;
 }
 
 fastPlus = (a, b, m) => {
 		var ret = 0;
-		a %= m, b %= m;
 		while (b) {
 				if(b & 1) ret = fastCore(ret, a, m);
 				b = Math.floor(b / 2);
