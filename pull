@@ -1,4 +1,8 @@
-#!/bin/sh
+git stage *
 
 git pull origin master
-pause
+git gc
+
+git status
+
+echo "Pull completed"
