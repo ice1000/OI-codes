@@ -162,7 +162,7 @@ Describe(Tests) {
 	It(shoud_work_for_random_tests_n_20000_An_100000) {
 		srand((unsigned)time(NULL));
 		cout << "<p><font color=\"yellow\">n == 19999, a[n] <= 100000</font></p>" << endl;
-		int count = 5;
+		int count = 3;
 		while (count --> 0) {
 			auto array = new int[19999]();
 			for (auto i = 0; i < 19999; ++i) {
@@ -178,7 +178,7 @@ Describe(Tests) {
 		cout << "<p><font color=\"red\">n == 100000, a[n] <= 100000</font></p>" << endl;
 		cout << "<p><font color=\"red\">test data will be stronger than you expect.</font></p>" << endl;
 		cout << "<p><font color=\"red\">I've done that on purpose.</font></p>" << endl;
-		int count = 5;
+		int count = 3;
 		auto r = new int[64]();
 		for (auto i = 0; i < 64; ++i) {
 			r[i] = rand() % 100000;
@@ -191,7 +191,7 @@ Describe(Tests) {
 			}
 			Assert::That(solve(100000, array), Equals(solution::solve(100000, array)));
 			delete array;
-			delete r;
 		}
+		delete r;
 	}
 };
