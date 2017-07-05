@@ -1,7 +1,14 @@
-#!/bin/sh
+git status
+
+read -p "Enter commct message:" -t 15
 
 git stage *
-git commit * -m "commit via push"
+git commit * -m "${REPLY}"
+
+echo ""
+echo "After commit:"
+
+git status
+
 git gc
 git push origin master
-
