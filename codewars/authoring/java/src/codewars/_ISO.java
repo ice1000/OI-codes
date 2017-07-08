@@ -3,8 +3,10 @@ package codewars;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
-/**
+/*
  * so, when are two type, `a` and `b`, considered equal?
  * a definition might be, it is possible to go from `a` to `b`,
  * and from `b` to `a`.
@@ -16,49 +18,52 @@ import java.util.stream.Stream;
  * <p>
  * Created by ice1000 on 17-6-19.
  */
-abstract class ISO<A, B> {
-		/** go backward */
+public abstract class ISO<A, B> {
+		/* go backward */
 		abstract A bw(final B b);
 
-		/** go forward */
+		/* go forward */
 		abstract B fw(final A a);
-		/**
-		 * Either in Haskell
-		 *
-		 * @param <L> left
-		 * @param <R> right
-		 */
-		final static class Either<L, R> {
-				final L l;
-				final R r;
 
-				Either(L l, R r) {
-						this.l = l;
-						this.r = r;
-				}
-
-				Either<R, L> invert() {
-						return new Either<>(r, l);
-				}
-
+		abstract static class Either<L, R> {
+				public abstract <T> T pm(Function<L, T> lt, Function<R, T> rt);
+    
 				static <L, R> Either<L, R> left(L l) {
-						return new Either<>(l, null);
+						return new Either<L, R>() {
+								@Override
+								public <T> T pm(Function<L, T> lt, Function<R, T> rt) {
+										return lt.apply(l);
+								}
+        
+								@Override
+								public boolean equals(Object rhs) {
+										return ((Either<L, R>) rhs).<Boolean>pm(l::equals, rr -> false);
+								}
+        
+								@Override
+								public String toString() {
+										return "left: " + l.toString();
+								}
+						};
 				}
 
 				static <L, R> Either<L, R> right(R r) {
-						return new Either<>(null, r);
-				}
+						return new Either<L, R>() {
+								@Override
+								public <T> T pm(Function<L, T> lt, Function<R, T> rt) {
+										return rt.apply(r);
+								}
+        
+								@Override
+								public boolean equals(Object rhs) {
+										return ((Either<L, R>) rhs).<Boolean>pm(ll -> false, r::equals);
+								}
 
-				<L2, R2> Either<L2, R2> map(Function<? super L, ? extends L2> lf, Function<? super R, ? extends R2> rf) {
-						return new Either<>(null != l ? lf.apply(l) : null, null != r ? rf.apply(r) : null);
-				}
-
-				@Override
-				@SuppressWarnings("unchecked")
-				public boolean equals(Object o) {
-						if (null == o || !(o instanceof Either<?, ?>)) return false;
-						Either<L, R> either = (Either<L, R>) o;
-						return l == either.l && r == either.r;
+								@Override
+								public String toString() {
+										return "right: " + r.toString();
+								}
+						};
 				}
 		}
 
@@ -70,52 +75,43 @@ abstract class ISO<A, B> {
 						this.a = a;
 						this.b = b;
 				}
-
+    
 				@Override
-				@SuppressWarnings("unchecked")
-				public boolean equals(Object o) {
-						if (null == o || !(o instanceof Tuple<?, ?>)) return false;
-						Tuple<A, B> tuple = (Tuple<A, B>) o;
-						return a == tuple.a && b == tuple.b;
+				public boolean equals(Object rhs) {
+						Tuple<A, B> ab = (Tuple<A, B>) rhs;
+						return a.equals(ab.a) && b.equals(ab.b);
 				}
 		}
 
 		final static class Unit {
 				public static Unit INSTANCE = new Unit();
-				
+
 				private Unit() {
 				}
 		}
-		
+
 		static abstract class Void {
 				public abstract <T> T absurd();
 		}
-		
-		static <A, B> ISO<A, B> iso(Function<A, B> forward, Function<B, A> backward) {
-				return new ISO<A, B>() {
-						@Override
-						public A bw(B b) {
-								return backward.apply(b);
-						}
 
-						@Override
-						public B fw(A a) {
-								return forward.apply(a);
-						}
+		private static <A, B> ISO<A, B> iso(Function<A, B> forward, Function<B, A> backward) {
+				return new ISO<A, B>() {
+						@Override public A bw(B b) { return backward.apply(b); }
+						@Override public B fw(A a) { return forward.apply(a); }
 				};
 		}
 
-		/** given ISO a b, we can go from a to b */
+		/* given ISO a b, we can go from a to b */
 		static <A, B> Function<A, B> subStL(final ISO<A, B> iso) {
 				return iso::fw;
 		}
 
-		/** and vise versa */
+		/* and vise versa */
 		static <A, B> Function<B, A> subStR(final ISO<A, B> iso) {
 				return iso::bw;
 		}
 
-		/** There can be more than one ISO a b */
+		/* There can be more than one ISO a b */
 		static ISO<Boolean, Boolean> isoBool() {
 				return refl();
 		}
@@ -124,101 +120,89 @@ abstract class ISO<A, B> {
 				return iso(a -> !a, b -> !b);
 		}
 
-		/** isomorphism is reflexive */
+		/* isomorphism is reflexive */
 		static <A> ISO<A, A> refl() {
 				return iso(a -> a, b -> b);
 		}
 
-		/** isomorphism is symmetric */
+		/* isomorphism is symmetric */
 		static <A, B> ISO<A, B> symm(final ISO<B, A> iso) {
 				return iso(iso::bw, iso::fw);
 		}
 
-		/** isomorphism is transitive */
-		static <A, B, C> ISO<A, C> trans(ISO<A, B> ab, ISO<B, C> bc) {
+		/* isomorphism is transitive */
+		static <A, B, C> ISO<A, C> trans(final ISO<A, B> ab, final ISO<B, C> bc) {
 				return iso(a -> bc.fw(ab.fw(a)), c -> ab.bw(bc.bw(c)));
 		}
 
-		/** We can combine isomorphism */
-		static <A, B, C, D> ISO<Tuple<A, C>, Tuple<B, D>> isoTuple(ISO<A, B> ab, ISO<C, D> cd) {
-				return iso(ac -> new Tuple<>(ab.fw(ac.a), cd.fw(ac.b)), bd -> new Tuple<>(ab.bw(bd.a), cd.bw(bd.b)));
+		/* We can combine isomorphism */
+		static <A, B, C, D> ISO<Tuple<A, C>, Tuple<B, D>> isoTuple
+				(final ISO<A, B> ab, final ISO<C, D> cd) {
+				return iso(ac -> new Tuple<>(ab.fw(ac.a), cd.fw(ac.b)),
+									 bd -> new Tuple<>(ab.bw(bd.a), cd.bw(bd.b)));
 		}
 
-		/** This corresponds to `isoList` in Haskell */
-		static <A, B> ISO<Stream<A>, Stream<B>> isoStream(ISO<A, B> iso) {
+		static <A, B> ISO<Stream<A>, Stream<B>> isoStream(final ISO<A, B> iso) {
 				return iso(as -> as.map(iso::fw), bs -> bs.map(iso::bw));
 		}
 
-		/** This corresponds to `isoMaybe` in Haskell */
-		static <A, B> ISO<Optional<A>, Optional<B>> isoOptional(ISO<A, B> iso) {
+		static <A, B> ISO<Optional<A>, Optional<B>> isoOptional(final ISO<A, B> iso) {
 				return iso(a -> a.map(iso::fw), b -> b.map(iso::bw));
 		}
 
-		static <A, B, C, D> ISO<Either<A, C>, Either<B, D>> isoEither(ISO<A, B> ab, ISO<C, D> cd) {
-				return iso(a -> a.map(ab::fw, cd::fw), b -> b.map(ab::bw, cd::bw));
+		static <A, B, C, D> ISO<Either<A, C>, Either<B, D>> isoEither
+				(final ISO<A, B> ab, final ISO<C, D> cd) {
+				return iso(l -> l.pm(a -> Either.left(ab.fw(a)),
+														 c -> Either.right(cd.fw(c))),
+									 r -> r.pm(b -> Either.left(ab.bw(b)),
+														 d -> Either.right(cd.bw(d))));
 		}
 
-		/**
+		/*
 		 * Going another way is hard (and is generally impossible)
 		 * Remember, for all valid ISO, converting and converting back
 		 * is the same as the original value.
 		 * You need this to prove some case are impossible.
 		 */
-		@SuppressWarnings("ConstantConditions")
-		static <A, B> ISO<A, B> isoUnOptional(ISO<Optional<A>, Optional<B>> iso) {
-				return iso(a -> iso.fw(Optional.of(a)).orElseGet(() -> iso.fw(Optional.empty()).get()),
-									 b -> iso.bw(Optional.of(b)).orElseGet(() -> iso.bw(Optional.empty()).get()));
+		static <A, B> ISO<A, B> isoUnOptional(final ISO<Optional<A>, Optional<B>> iso) {
+				return iso(a -> iso.fw(Optional.of(a))
+									 .orElseGet(() -> iso.fw(Optional.empty()).get()),
+									 b -> iso.bw(Optional.of(b))
+									 .orElseGet(() -> iso.bw(Optional.empty()).get()));
 		}
 
-		static <A, B, C, D> ISO<Function<A, C>, Function<B, D>> isoFunc(ISO<A, B> ab, ISO<C, D> cd) {
-				return iso(ac -> a -> cd.fw(ac.apply(ab.bw(a))), bd -> b -> cd.bw(bd.apply(ab.fw(b))));
-		}
-		
 		// We cannot have
 		// isoUnEither ::
 		// ISO (Either a b) (Either c d) -> ISO a c -> ISO b d.
 		// Note that we have
-		static ISO<Either<Stream<Unit>, Unit>, Either<Stream<Unit>, Void>> isoEU() {
+		static ISO<Either<Stream<Unit>, Unit>, Either<Stream<Unit>, Void>>isoEU() {
 				return iso(l -> l.pm(ll -> Either.left(Stream.concat(Stream.of(Unit.INSTANCE), ll)),
 														 r -> Either.left(Stream.empty())),
-									 r -> r.pm(l -> {
+									 r -> r.pm(l -> { 
 													 List<Unit> lu = l.collect(Collectors.toList());
-													 return lu.isEmpty() ? Either.right(Unit.INSTANCE) :
-															 Either.left(Stream.generate(() -> Unit.INSTANCE).limit(lu.size() - 1));
-											 }, Void::absurd));
-		}
+													 return lu.isEmpty() ? 
+															 Either.right(Unit.INSTANCE) :
+															 Either.left(Stream.generate
+																					 (() -> Unit.INSTANCE).limit(lu.size() - 1));
+											 },
+											 Void::absurd));
+    }
+
 		// where (), the empty tuple, has 1 value, and Void has 0 value
 		// If we have isoUnEither,
 		// We have ISO () Void by calling isoUnEither isoEU
 		// That is impossible, since we can get a Void by
 		// substL on ISO () Void
 		// So it is impossible to have isoUnEither
-		
-		/** And we have isomorphism on isomorphism! */
+
+		static <A, B, C, D> ISO<Function<A, C>, Function<B, D>>
+				isoFunc(final ISO<A, B> ab, final ISO<C, D> cd) {
+				return iso(ac -> a -> cd.fw(ac.apply(ab.bw(a))),
+									 bd -> b -> cd.bw(bd.apply(ab.fw(b))));
+		}
+
+		/* And we have isomorphism on isomorphism! */
 		static <A, B> ISO<ISO<A, B>, ISO<B, A>> isoSymm() {
 				return iso(ISO::symm, ISO::symm);
 		}
-
-		// ---------------------------
-
-		static <A, B, C, D> ISO<Tuple<A, C>, Tuple<B, D>> isoProd(ISO<A, B> ab, ISO<C, D> cd) {
-				return isoTuple(ab, cd);
-		}
-
-		static <A, B, C, D> ISO<Either<A, C>, Either<B, D>> isoPlus(ISO<A, B> ab, ISO<C, D> cd) {
-				return isoEither(ab, cd);
-		}
-
-		static <A, B> ISO<Optional<A>, Optional<B>> isoS(ISO<A, B> iso) {
-				return isoOptional(iso);
-		}
-
-		static <A, B, C, D> ISO<Function<A, C>, Function<B, D>> isoPow(ISO<A, B> ab, ISO<C, D> cd) {
-				return isoFunc(ab, cd);
-		}
-
-		static <A, B> ISO<Either<A, B>, Either<B, A>> plusComm() {
-				return iso(Either::invert, Either::invert);
-		}
-
 }

@@ -2,22 +2,18 @@ package codewars;
 
 import org.junit.Test;
 
+import java.util.stream.Collectors;
+import java.util.List;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
+ 
 import static codewars.ISO.*;
 import static org.junit.Assert.*;
 
-/**
- * Created by ice1000 on 17-6-19.
- *
- * @author ice1000
- */
-@SuppressWarnings("AssertEqualsBetweenInconvertibleTypes")
 public class ISOTest {
 		private static <A, B> ISO<A, B> iso(Function<A, B> forward, Function<B, A> backward) {
 				return new ISO<A, B>() {
@@ -42,7 +38,10 @@ public class ISOTest {
 						function.apply();
 				} catch (Throwable e) {
 						if (clazz != e.getClass())
-								fail(String.format("Error: expected: %s, get: %s", clazz, e.getClass()));
+								fail(
+										 String.format("Error: expected: %s, get: %s", 
+																	 clazz,
+																	 e.getClass()));
 						return;
 				}
 				fail("No exceptions thrown!");
@@ -51,22 +50,25 @@ public class ISOTest {
 		private static final String MEOW = "meow";
 		private static final String MOE = "moe";
 
-		private static ISO<Boolean, String> tISO = iso(it -> it ? MEOW : MOE, MEOW::equals);
+		private static ISO<Boolean, String> tISO = 
+				iso(it -> it ? MEOW : MOE, MEOW::equals);
 
-		private static ISO<Optional<Boolean>, Optional<Boolean>> mISO =
+		private static ISO<Optional<Boolean>, Optional<Boolean>> mISO = 
 				iso(it -> it.<Optional<Boolean>>map
 						(b -> b
 						 ? Optional.of(false)
-						 : Optional.empty()).orElse(Optional.of(true)), null);
+						 : Optional.empty()).orElseGet(() -> Optional.of(true)), null);
 		
-		private static ISO<Boolean, Boolean> bISO = isoUnOptional(mISO);
+		private static ISO<Boolean, Boolean> bISO = 
+				isoUnOptional(mISO);
 
-		private static ISO<Optional<Boolean>, Optional<Boolean>> badMISO =
+		private static ISO<Optional<Boolean>, Optional<Boolean>> badMISO = 
 				iso(it -> it.flatMap(b -> b
 														 ? Optional.of(false)
 														 : Optional.empty()), null);
 
-		private static ISO<Boolean, Boolean> badISO = isoUnOptional(badMISO);
+		private static ISO<Boolean, Boolean> badISO = 
+				isoUnOptional(badMISO);
 
 		private static <A, B> Function<A, A> lrl(ISO<A, B> iso) {
 				return it -> iso.bw(iso.fw(it));
@@ -78,7 +80,8 @@ public class ISOTest {
 
 		private static final String str = "it was me, DIO!";
 
-		private static Stream<Object> lu = Arrays.stream(new Object[]{0, 1, 2, 3, 4, 5, 6, 7});
+		private static Stream<Object> lu =
+				Arrays.stream(new Object[]{0, 1, 2, 3, 4, 5, 6, 7});
 
 		@Test
 		public void subStLTest() {
@@ -89,15 +92,17 @@ public class ISOTest {
 
 		@Test
 		public void subStRTest() {
-				assertEquals(MEOW, subStL(subStR(iso(null, e -> tISO)).apply(null)).apply(true));
+				assertEquals(MEOW,
+										 subStL(subStR(iso(null, e -> tISO)).apply(null)).apply(true));
 				assertEquals(true, subStR(isoBool()).apply(true));
 				assertEquals(false, subStR(isoBool()).apply(false));
 		}
 
 		@Test
-		@SuppressWarnings("unchecked")
 		public void reflTest() {
-				assertEquals(MEOW, subStL((ISO<Boolean, Boolean>) subStL(refl()).apply(tISO)).apply(true));
+				assertEquals(MEOW,
+										 subStL((ISO<Boolean, Boolean>) subStL(refl())
+														.apply(tISO)).apply(true));
 		}
 
 		@Test
@@ -107,12 +112,14 @@ public class ISOTest {
 
 		@Test
 		public void transTest() {
-				assertEquals(MEOW, subStL(trans(refl(), trans(tISO, refl()))).apply(true));
+				assertEquals(MEOW, 
+										 subStL(trans(refl(), trans(tISO, refl()))).apply(true));
 		}
-
+		
 		@Test
 		public void isoTupleTest() {
-				Tuple<String, String> tuple = subStL(isoTuple(tISO, tISO)).apply(new Tuple<>(true, false));
+				Tuple<String, String> tuple =
+						subStL(isoTuple(tISO, tISO)).apply(new Tuple<>(true, false));
 				assertEquals(MEOW, tuple.a);
 				assertEquals(MOE, tuple.b);
 		}
@@ -120,20 +127,24 @@ public class ISOTest {
 		@Test
 		public void isoStreamTest() {
 				assertEquals(Optional.of(MEOW + MEOW + MOE),
-										 subStL(isoStream(tISO)).apply(Arrays.stream(new Boolean[]{true, true, false}))
+										 subStL(isoStream(tISO)).apply(Arrays.stream
+																									 (new Boolean[]{true, true, false}))
 										 .reduce((a, b) -> a + b));
 		}
 
 		@Test
 		public void isoFuncTest() {
-				assertEquals(MEOW, subStL(isoFunc(symm(tISO), tISO)).apply(MEOW::equals).apply(true));
+				assertEquals(
+										 MEOW,
+										 subStL(isoFunc(symm(tISO), tISO)).apply(MEOW::equals)
+										 .apply(true));
 		}
 
 		@Test
-		@SuppressWarnings("ConstantConditions")
 		public void isoOptionalTest() {
 				assertFalse(subStL(isoOptional(tISO)).apply(Optional.empty()).isPresent());
-				assertEquals(MEOW, subStL(isoOptional(tISO)).apply(Optional.of(true)).get());
+				assertEquals(MEOW, 
+										 subStL(isoOptional(tISO)).apply(Optional.of(true)).get());
 		}
 
 		@Test
@@ -141,12 +152,35 @@ public class ISOTest {
 				assertEquals(false, subStL(bISO).apply(true));
 				assertEquals(true, subStL(bISO).apply(false));
 				assertEquals(false, subStL(badISO).apply(true));
-				assertThrows(NoSuchElementException.class, () -> subStL(badISO).apply(false));
+				assertThrows(NoSuchElementException.class, 
+										 () -> subStL(badISO).apply(false));
+				ISO<Boolean, Boolean> bi = isoUnOptional(isoOptional(refl()));
+				assertEquals(true, lrl(bi).apply(true));
+				assertEquals(false, lrl(bi).apply(false));
+				assertEquals(true, rlr(bi).apply(true));
+				assertEquals(false, rlr(bi).apply(false));
+				ISO<Boolean, Boolean> biso = 
+						symm(isoUnOptional(symm(mISO)));
+				assertEquals(false, subStL(bISO).apply(true));
+				assertEquals(true, subStL(bISO).apply(false));
+				assertEquals(false, subStL(badISO).apply(true));
+				assertThrows(NoSuchElementException.class, 
+										 () -> subStL(badISO).apply(false));
 		}
 
-		public static boolean eitherEq(Either<?, ?> a, Either<?, ?> b) {
-				return Objects.equals(a.l, b.l) && Objects.equals(a.r, b.r);
+		Stream<Unit> lu() {
+				return Stream.of
+						(Unit.INSTANCE, Unit.INSTANCE,
+						 Unit.INSTANCE, Unit.INSTANCE,
+						 Unit.INSTANCE, Unit.INSTANCE,
+						 Unit.INSTANCE, Unit.INSTANCE);
 		}
+
+		static <A> Either<List<Unit>, A> conv(Either<Stream<Unit>, A> e) {
+				return e.pm(l -> Either.left(l.collect(Collectors.toList())),
+										r -> Either.right(r));
+		}
+  
 		@Test
 		public void isoEUTest() {
 				assertEquals(conv(lrl(isoEU()).apply(Either.left(Stream.empty()))),
@@ -165,19 +199,21 @@ public class ISOTest {
 		}
 
 		@Test
-		@SuppressWarnings("unchecked")
 		public void isoEitherTest() {
-				assertTrue(eitherEq(Either.left(false), subStL(isoEither(isoBoolNot(), tISO))
-														.apply(Either.left(true))));
-				assertTrue(eitherEq(Either.left(true), subStL(isoEither(isoBoolNot(), tISO))
-														.apply(Either.left(false))));
-				assertTrue(eitherEq(Either.right(MEOW), subStL(isoEither(isoBoolNot(), tISO))
-														.apply(Either.right(true))));
+				assertEquals(Either.left(false),
+										 subStL(isoEither(isoBoolNot(), tISO))
+										 .apply(Either.left(true)));
+				assertEquals(Either.left(true),
+										 subStL(isoEither(isoBoolNot(), tISO))
+										 .apply(Either.left(false)));
+				assertEquals(Either.right(MEOW),
+										 subStL(isoEither(isoBoolNot(), tISO))
+										 .apply(Either.right(true)));
 		}
 
 		@Test
-		@SuppressWarnings("unchecked")
 		public void isoSymmTest() {
-				assertEquals(MOE, subStR(subStR(isoSymm()).apply((ISO) tISO)).apply(false));
+				assertEquals(MOE, 
+										 subStR(subStR(isoSymm()).apply((ISO) tISO)).apply(false));
 		}
 }
