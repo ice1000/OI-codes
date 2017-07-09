@@ -38,10 +38,7 @@ public class ISOTest {
 						function.apply();
 				} catch (Throwable e) {
 						if (clazz != e.getClass())
-								fail(
-										 String.format("Error: expected: %s, get: %s", 
-																	 clazz,
-																	 e.getClass()));
+								fail(String.format("Error: expected: %s, get: %s", clazz, e.getClass()));
 						return;
 				}
 				fail("No exceptions thrown!");
