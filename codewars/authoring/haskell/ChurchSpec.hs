@@ -39,6 +39,5 @@ main = hspec $ do
     it "random tests" $ do
       rand1 <- getRand 100
       rand2 <- getRand 100
-      head (runTest <$> zip rand1 rand2)
+      forM_ (zip rand1 rand2) runTest
 --
-
