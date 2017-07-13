@@ -1,3 +1,6 @@
+# not written by me myself
+# see https://github.com/esphas/esphas.github.io/blob/master/_posts/2017-06-16-recent_days.md
+
 def boolfuck code, input = ''
   reader = pointer = pt = 0
   tapes = [[], []]
