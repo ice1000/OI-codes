@@ -45,32 +45,28 @@ emptyParser :: Parser a
 emptyParser = Parser $ \_ -> []
 
 instance Monad Parser where
-  return = unitParser
-  p >>= f = Parser $ \s -> concatMap (\(a, s1) -> parse (f a) s1) $ parse p s
+  return  = unitParser
+  p >>= f = Parser $ concatMap (\(a, s1) -> parse (f a) s1) . parse p
 --
 
 instance MonadPlus Parser where
-  mzero = emptyParser
+  mzero     = emptyParser
   mplus p q = Parser $ \s -> parse p s ++ parse q s
 --
 
 instance Alternative Parser where
-  empty = mzero
+  empty   = mzero
   p <|> q = Parser $ \s -> case parse p s of
     [] -> parse q s
     rs -> rs
 --
 
 satisfy :: (Production -> Bool) -> Parser Production
-satisfy p = item >>= (\c ->
-  if p c then unitParser c else emptyParser)
+satisfy p = item >>= \c -> if p c then unitParser c else emptyParser
 --
 
 matches :: Production -> Parser Production
-matches p = item >>= (\c -> case c of
-  p -> unitParser c
-  _ -> emptyParser)
---
+matches p = item >>= \c -> if c == p then unitParser c else emptyParser
 
 fromToken :: Token -> Parser Production
 fromToken t = satisfy (== FromToken t)
@@ -79,9 +75,9 @@ char :: Char -> Parser Production
 char c = fromToken $ TChar c
 
 numberParser :: Parser Production
-numberParser = satisfy (\x -> case x of
+numberParser = satisfy $ \x -> case x of
   FromToken (TInt _) -> True
-  _                  -> False)
+  _                  -> False
 --
 
 paramParser :: Parser Production
@@ -147,8 +143,8 @@ parseCode parser production = case parse parser production of
 
 item :: Parser Production
 item = Parser $ \s -> case s of
-  [] -> []
-  (h:t) -> [(h, t)]
+  [     ] -> []
+  (h : t) -> [(h, t)]
 --
 
 alpha, digit :: String
