@@ -7,16 +7,6 @@ import Data.Maybe
 import Control.Monad
 import Control.Applicative hiding (many, some)
 
-data AST = Imm Int
-         | Arg Int
-         | Tmp String
-         | Add AST AST
-         | Sub AST AST
-         | Mul AST AST
-         | Div AST AST
-         deriving (Eq, Show)
---
-
 alpha = ['a'..'z'] ++ ['A'..'Z']
 
 -----------------------------------------------------
@@ -25,10 +15,10 @@ alpha = ['a'..'z'] ++ ['A'..'Z']
 
 newtype Parser val = Parser { parse :: String -> [(val, String)]  }
 
-parseCode :: Parser a -> String -> a
+parseCode :: Parser a -> String -> Maybe a
 parseCode m s = case parse m s of
-  [(res, [])] -> res
-  _           -> error "Hugh?"
+  [(res, [])] -> Just res
+  _           -> Nothing
 --
 
 instance Functor Parser where
@@ -125,70 +115,23 @@ parens m = do
   return n
 --
 
-int :: Parser AST
+int :: Parser Int
 int = do
   n <- number
   spaces
-  return $ Imm n
+  return n
 --
 
-arg :: Parser AST
+arg :: Parser String
 arg = do
   n <- some $ oneOf alpha
   spaces
-  return $ Tmp n
+  return n
 --
 
 binOp x = (reserved x >>) . return
-addop = binOp "+" Add <|> binOp "-" Sub
-mulop = binOp "*" Mul <|> binOp "/" Div
+addop = undefined -- binOp "+" Add <|> binOp "-" Sub
+mulop = undefined -- binOp "*" Mul <|> binOp "/" Div
 expr = chainl1 term addop
 term = chainl1 factor mulop
-factor = int <|> arg <|> parens expr
-function = do
-  reserved "["
-  args <- many $ oneOf $ alpha ++ " "
-  reserved "]"
-  spaces
-  ex <- expr
-  return ([ arg | arg <- splitOn " " args, arg /= "" ], ex)
---
-
-compile :: String -> [String]
-compile = pass3 . pass2 . pass1
-firstTwoPass = pass2 . pass1
-
-pass1 :: String -> AST
-pass1 = f . parseCode function
-  where f (args, (Imm i))   = Imm i
-        f (args, (Tmp a))   = Arg $ fromJust $ elemIndex a args
-        f (args, (Add a b)) = Add (f (args, a)) $ f (args, b)
-        f (args, (Sub a b)) = Sub (f (args, a)) $ f (args, b)
-        f (args, (Mul a b)) = Mul (f (args, a)) $ f (args, b)
-        f (args, (Div a b)) = Div (f (args, a)) $ f (args, b)
---
-
-pass2 :: AST -> AST
-pass2 (Imm i)   = Imm i
-pass2 (Arg a)   = Arg a
-pass2 (Add a b) = case (pass2 a, pass2 b) of
-  (Imm x, Imm y) -> Imm $ x + y
-  (  x  ,   y  ) -> Add x y
-pass2 (Sub a b) = case (pass2 a, pass2 b) of
-  (Imm x, Imm y) -> Imm $ x - y
-  (  x  ,   y  ) -> Sub x y
-pass2 (Mul a b) = case (pass2 a, pass2 b) of
-  (Imm x, Imm y) -> Imm $ x * y
-  (  x  ,   y  ) -> Mul x y
-pass2 (Div a b) = case (pass2 a, pass2 b) of
-  (Imm x, Imm y) -> Imm $ div x y
-  (  x  ,   y  ) -> Div x y
---
-
-pass3 :: AST -> [String]
-pass3 (Imm i)   = ["IM " ++ show i]
-pass3 (Arg a)   = ["AR " ++ show a]
-pass3 (Add a b) = pass3 a ++ ["PU"] ++ pass3 b ++ ["SW", "PO", "AD"]
-pass3 (Sub a b) = pass3 a ++ ["PU"] ++ pass3 b ++ ["SW", "PO", "SU"]
-pass3 (Mul a b) = pass3 a ++ ["PU"] ++ pass3 b ++ ["SW", "PO", "MU"]
-pass3 (Div a b) = pass3 a ++ ["PU"] ++ pass3 b ++ ["SW", "PO", "DI"]
+factor = undefined -- int <|> arg <|> parens expr
