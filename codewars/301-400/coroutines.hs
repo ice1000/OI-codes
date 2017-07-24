@@ -4,31 +4,38 @@ module Coroutine where
 import Control.Monad (ap, forever)
 -- import Preloaded
 
+-- | a =>> Done
+-- | u =>> In
+-- | d =>> Out
+-- | r =>> Result
 newtype Coroutine r u d a = Coroutine
   { runCoroutine :: (Command r u d a -> r) -> r } deriving (Functor)
 --
 
-data Command r u d a = Done a
-                     | Out d (Coroutine r u d a)
-                     | In (u -> Coroutine r u d a) deriving Functor
+data Command r u d a =
+  Done a
+  | Out d (Coroutine r u d a)
+  | In (u -> Coroutine r u d a) deriving Functor
 --
 
 -- Useful alias
 apply :: Coroutine r u d a -> (Command r u d a -> r) -> r
 apply = runCoroutine
+(=>>) = apply
+(||>) = Out
 
 instance Applicative (Coroutine r u d) where
   pure x = Coroutine ($ Done x)
-  f <*> c = undefined
+  f <*> a = f >>= (<$> a)
 --
 
 instance Monad (Coroutine r u d) where
   return = pure
-  (Coroutine f) >>= g = Coroutine $ \x -> f $ \(Done a) -> runCoroutine (g a) x
+  (Coroutine f) >>= g = Coroutine $ \x -> f $ \(Done a) -> g a =>> x
 --
 
 (>>>) :: Coroutine r u m a -> Coroutine r m d a -> Coroutine r u d a
-p1 >>> p2 = Coroutine $ \x -> undefined
+(Coroutine p1) >>> (Coroutine p2) = Coroutine $ \x -> x p1
 
 -- It might be useful to define the following function
 -- pipe2 :: Coroutine r u m a -> (m -> Coroutine r m d a) -> Coroutine r u d a
@@ -36,10 +43,10 @@ p1 >>> p2 = Coroutine $ \x -> undefined
 -- Library functions
 
 output :: a -> Coroutine r u a ()
-output v = Coroutine ($ Out v)
+output v = Coroutine ($ v ||> pure ())
 
 input :: Coroutine r v d v
-input = undefined
+input = Coroutine ($ In pure)
 
 produce :: [a] -> Coroutine r u a ()
 produce xs = undefined

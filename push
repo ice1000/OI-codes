@@ -3,8 +3,8 @@ git status
 read -p "Enter commct message:" -t 15
 
 git add *
-git stage *
-git commit * -m "${REPLY}"
+git stage -a
+git commit -a -m "${REPLY}"
 
 echo ""
 echo "After commit:"
