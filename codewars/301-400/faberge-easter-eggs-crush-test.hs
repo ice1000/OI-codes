@@ -1,6 +1,6 @@
 module Faberge where
 
--- b *= (m - c + 1) `div` c
+-- b = (m - c + 1) * b `div` c
 -- a += b
 -- c++
 
