@@ -11,11 +11,11 @@ heigth _ 0 = 0
 heigth 0 _ = 0
 heigth n m
   |n > m = heigth m m
-  |True  = shit 1 1 0
-  where shit c b a =
+  |True  = linearComp 1 1 0
+  where linearComp c b a =
           if c <= n then
             let d = (m + 1 - c) * b `div` c
-            in shit (c + 1) d (a + d)
+            in linearComp (c + 1) d (a + d)
           else a
 --
 
