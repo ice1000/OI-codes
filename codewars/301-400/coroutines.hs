@@ -1,44 +1,54 @@
 {-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE LambdaCase #-}
+
 module Coroutine where
 
-import Control.Monad (ap, forever)
--- import Preloaded
+import Control.Monad
+import Preloaded
 
--- | a =>> Done
--- | u =>> In
--- | d =>> Out
--- | r =>> Result
-newtype Coroutine r u d a = Coroutine
-  { runCoroutine :: (Command r u d a -> r) -> r } deriving (Functor)
+-- Preloaded contains the following:
 --
-
-data Command r u d a =
-  Done a
-  | Out d (Coroutine r u d a)
-  | In (u -> Coroutine r u d a) deriving Functor
+-- newtype Coroutine r u d a = Coroutine { runCoroutine :: (Command r u d a -> r) -> r } deriving (Functor)
 --
+-- data Command r u d a =
+--   Done a
+-- | Out d (Coroutine r u d a)
+-- | In (u -> Coroutine r u d a) deriving Functor
 
 -- Useful alias
 apply :: Coroutine r u d a -> (Command r u d a -> r) -> r
 apply = runCoroutine
-(=>>) = apply
 (||>) = Out
+(=>>) = apply
 
 instance Applicative (Coroutine r u d) where
-  pure x = Coroutine ($ Done x)
+  pure x  = Coroutine ($ Done x)
   f <*> a = f >>= (<$> a)
 --
 
 instance Monad (Coroutine r u d) where
   return = pure
-  (Coroutine f) >>= g = Coroutine $ \x -> f $ \(Done a) -> g a =>> x
+  (Coroutine f) >>= g = Coroutine $ \k -> f $ \gg -> case gg of
+    Done a  -> g a =>> k
+    Out d c -> k $ Out d $ c >>= g
+    In c    -> k $ In $ (>>= g) <$> c
 --
 
 (>>>) :: Coroutine r u m a -> Coroutine r m d a -> Coroutine r u d a
-(Coroutine p1) >>> (Coroutine p2) = Coroutine $ \x -> x p1
+p1 >>> (Coroutine p2) = Coroutine $ \k -> p2 $ \case
+  Done a  -> k $ Done a
+  Out d c -> k $ Out d $ p1 >>> c
+  In c    -> pipe2 p1 c `apply` k
+--
 
 -- It might be useful to define the following function
--- pipe2 :: Coroutine r u m a -> (m -> Coroutine r m d a) -> Coroutine r u d a
+
+pipe2 :: Coroutine r u m a -> (m -> Coroutine r m d a) -> Coroutine r u d a
+pipe2 (Coroutine p1) p2 = Coroutine $ \k -> p1 $ \case
+    Done a  -> k $ Done a
+    Out d c -> apply (c >>> p2 d) k
+    In c    -> k $ In $ (`pipe2` p2) <$> c
+--
 
 -- Library functions
 
@@ -49,35 +59,39 @@ input :: Coroutine r v d v
 input = Coroutine ($ In pure)
 
 produce :: [a] -> Coroutine r u a ()
-produce xs = undefined
+produce =  mapM_ output
 
 consume :: Coroutine [t] u t a -> [t]
-consume c = undefined
+consume (Coroutine x) = x $ \case
+    Out d c -> d : consume c
+    _       -> []
+--
 
 filterC :: (v -> Bool) -> Coroutine r v v ()
-filterC p = undefined
+filterC p = forever $ input >>= \v -> p v `when` output v
 
 limit :: Int -> Coroutine r v v ()
-limit n = undefined
+limit = flip replicateM_ $ input >>= output
 
 suppress :: Int -> Coroutine r v v ()
-suppress n = undefined
+suppress n = replicateM_ n input >> forever (input >>= output)
 
 add :: Coroutine r Int Int ()
-add = undefined
+add = forever $ input >>= \v1 -> input >>= \v2 -> output $ v1 + v2
 
 duplicate :: Coroutine r v v ()
-duplicate = undefined
+duplicate = forever $ input >>= \v -> output v >> output v
 
 -- Programs
 -- 1. A program which outputs the first 5 even numbers of a stream.
--- 2. A program which produces a stream of the triangle numbers 
+-- 2. A program which produces a stream of the triangle numbers
 -- 3. A program which multiplies a stream by 2
 -- 4. A program which sums adjacent pairs of integers
 
 p1, p2, p3, p4 :: Coroutine r Int Int ()
 
-p1 = undefined
-p2 = undefined
-p3 = undefined
-p4 = undefined
+p1 = filterC even >>> limit 5
+p2 = produce [ x * (x + 1) `div` 2 | x <- [1 ..] ]
+p3 = duplicate >>> add
+p4 = duplicate >>> suppress 1 >>> add
+
