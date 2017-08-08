@@ -91,8 +91,9 @@ void init() {
 	memset(nxt, 0, sizeof(nxt));
 }
 
-LL solve(int n0, int a0[]) {
-	n = n0;
+template<std::size_t S>
+LL solve(std::array<int, S> a0) {
+	n = a0.size();
 	for (auto i = 0; i < n; ++i)
 		a[i + 1] = a0[i];
 	init();
@@ -110,4 +111,5 @@ LL solve(int n0, int a0[]) {
 	}
 	return ans;
 }
+
 
