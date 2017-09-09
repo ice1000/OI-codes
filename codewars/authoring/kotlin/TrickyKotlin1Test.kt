@@ -3,7 +3,7 @@ import java.io.File
 import java.util.*
 import kotlin.test.assertEquals
 
-class KotlinTricks0 {
+class KotlinTricks1 {
 	@Test
 	fun testString() {
 		assertEquals<String>("wow, I am the argument!", "this is a string, invoke it!"("wow, I am the argument!"))
