@@ -18,19 +18,23 @@ class KotlinTricks2 {
 
 	@Test
 	fun testUnless() {
-		val r = Random(System.currentTimeMillis())
+		val r = java.util.Random(System.currentTimeMillis())
 		(0..100).forEach { testUnlessHelper(r.nextBoolean()) }
 	}
 
 	@Test
 	fun testUntil() {
-		val r = Random(System.currentTimeMillis())
-		(0..100).forEach { testUntilHelper(Math.abs(r.nextInt())) }
+		val r = java.util.Random(System.currentTimeMillis())
+		(0..100).forEach { testUntilHelper(Math.abs(r.nextInt(100))) }
 	}
 
 	@Test
 	fun testForceRun() {
-		val r = Random(System.currentTimeMillis())
+		val r = java.util.Random(System.currentTimeMillis())
 		(0..100).forEach { forceRun { listOf(1)[r.nextInt()] } }
+		var a = 1
+		forceRun { a = 2 }
+		assertEquals(a, 2)
 	}
 }
+

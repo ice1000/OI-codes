@@ -1,0 +1,1 @@
+val concatString = String::plus
