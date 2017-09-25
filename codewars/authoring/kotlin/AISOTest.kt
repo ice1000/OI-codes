@@ -1,14 +1,9 @@
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Test
 import java.util.*
 import java.util.Arrays.stream
-import java.util.Optional.empty
-import java.util.Optional.of
 import java.util.stream.Collectors
 import java.util.stream.Stream
 import kotlin.test.*
-
 
 class ISOTest {
 
@@ -39,7 +34,7 @@ class ISOTest {
 	fun isoPairTest() = assertEquals(MEOW to MOE, subStL(isoPair(tISO, tISO))(Pair(true, false)))
 
 	@Test
-	fun isoStreamTest() = assertEquals(of(MEOW + MEOW + MOE), subStL(isoStream(tISO))(stream(arrayOf(true, true, false))).reduce(String::plus))
+	fun isoStreamTest() = assertEquals(Optional.of(MEOW + MEOW + MOE), subStL(isoStream(tISO))(Arrays.stream(arrayOf(true, true, false))).reduce(String::plus))
 
 	@Test
 	fun isoFuncTest() = assertEquals(MEOW, subStL(isoFunc(symm(tISO), tISO))(MEOW::equals)(true))
@@ -49,8 +44,8 @@ class ISOTest {
 
 	@Test
 	fun isoOptionalTest() {
-		assertFalse(subStL(isoOptional(tISO))(empty()).isPresent)
-		assertEquals(MEOW, subStL(isoOptional(tISO))(of(true)).get())
+		assertFalse(subStL(isoOptional(tISO))(Optional.empty()).isPresent)
+		assertEquals(MEOW, subStL(isoOptional(tISO))(Optional.of(true)).get())
 	}
 
 	@Test
@@ -79,7 +74,7 @@ class ISOTest {
 		assertEquals(conv(lrl(isoEU())(left(lu()))), conv(left<Stream<Unit>, Nothing>(lu())))
 		assertEquals(conv(lrl(isoEU())(right(Unit))), conv(right(Unit)))
 		assertEquals(conv(rlr(isoEU())(left(Stream.empty<Unit>()))), conv(left<Stream<Unit>, Nothing>(Stream.empty())))
-		assertEquals(conv(rlr(isoEU())(left(lu()))), conv(left<Stream<Unit>, Nothing>(lu())))
+		assertEquals(conv(rlr(isoEU())(left(lu()))), conv(left(lu())))
 		assertEquals(subStL(isoEU())(right(Unit)).pm({ true }, { false }), true)
 	}
 
@@ -87,17 +82,17 @@ class ISOTest {
 	fun isoEitherTest() {
 		assertEquals(left<Boolean, Nothing>(false), subStL(isoEither(isoBoolNot(), tISO))(left(true)))
 		assertEquals(left<Boolean, Nothing>(true), subStL(isoEither(isoBoolNot(), tISO))(left(false)))
-		assertEquals(right<Boolean, String>(MEOW), subStL(isoEither(isoBoolNot(), tISO))(right(true)))
+		assertEquals(right(MEOW), subStL(isoEither(isoBoolNot(), tISO))(right(true)))
 	}
 
 	@Test
 	fun assoc() {
-		assertEquals(left<Either<Int, Boolean>, String>(left(233)), lrl(pa())(left(left(233))))
-		assertEquals(left<Either<Int, Boolean>, String>(right(true)), lrl(pa())(left(right(true))))
-		assertEquals(right<Either<Int, Boolean>, String>(str), lrl(pa())(right(str)))
-		assertEquals(left<Int, Either<Boolean, String>>(233), rlr(pa())(left(233)))
-		assertEquals(right<Int, Either<Boolean, String>>(left(true)), rlr(pa())(right(left(true))))
-		assertEquals(right<Int, Either<Boolean, String>>(right(str)), rlr(pa())(right(right(str))))
+		assertEquals(left(left(233)), lrl(pa())(left(left(233))))
+		assertEquals(left(right(true)), lrl(pa())(left(right(true))))
+		assertEquals(right(str), lrl(pa())(right(str)))
+		assertEquals(left(233), rlr(pa())(left(233)))
+		assertEquals(right(left(true)), rlr(pa())(right(left(true))))
+		assertEquals(right(right(str)), rlr(pa())(right(right(str))))
 	}
 
 	@Test
@@ -121,15 +116,15 @@ class ISOTest {
 	@Test
 	fun oneTest() {
 		assertEquals(Unit, lrl(one())(Unit))
-		assertEquals(Optional.empty<Optional<Unit>>(), rlr(one())(Optional.empty()))
+		assertEquals(Optional.empty(), rlr(one())(Optional.empty()))
 	}
 
 	@Test
 	fun twoTest() {
 		assertTrue(lrl(two())(true))
 		assertFalse(lrl(two())(false))
-		assertEquals(Optional.empty<Optional<Unit>>(), rlr(two())(Optional.empty()))
-		assertEquals(Optional.of<Optional<Unit>>(Optional.empty()), rlr(two())(Optional.of(Optional.empty())))
+		assertEquals(Optional.empty(), rlr(two())(Optional.empty()))
+		assertEquals(Optional.of(Optional.empty()), rlr(two())(Optional.of(Optional.empty())))
 	}
 
 	@Test
@@ -138,13 +133,13 @@ class ISOTest {
 		assertEquals(str, rlr(plusO<String>())(str))
 		assertEquals(left<Optional<String>, Nothing>(Optional.of(str)), lrl(pss())(left(Optional.of(str))))
 		assertEquals(left<Optional<String>, Nothing>(Optional.empty()), lrl(pss())(left(Optional.empty())))
-		assertEquals(right<Optional<String>, Int>(233), lrl(pss())(right(233)))
-		assertEquals(Optional.of(left<String, Int>(str)), rlr(pss())(Optional.of(left(str))))
-		assertEquals(Optional.of(right<String, Int>(233)), rlr(pss())(Optional.of(right(233))))
-		assertEquals(Optional.empty<Nothing>(), rlr(pss())(Optional.empty()))
-		assertEquals(left<Unit, Int>(Unit), lrl(pso())(left(Unit)))
-		assertEquals(right<Unit, Int>(233), lrl(pso())(right(233)))
-		assertEquals(Optional.empty<Nothing>(), rlr(pso())(Optional.empty()))
+		assertEquals(right(233), lrl(pss())(right(233)))
+		assertEquals(Optional.of(left(str)), rlr(pss())(Optional.of(left(str))))
+		assertEquals(Optional.of(right(233)), rlr(pss())(Optional.of(right(233))))
+		assertEquals(Optional.empty(), rlr(pss())(Optional.empty()))
+		assertEquals(left(Unit), lrl(pso())(left(Unit)))
+		assertEquals(right(233), lrl(pso())(right(233)))
+		assertEquals(Optional.empty(), rlr(pso())(Optional.empty()))
 		assertEquals(Optional.of(233), rlr(pso())(Optional.of(233)))
 	}
 
@@ -152,8 +147,8 @@ class ISOTest {
 	fun multTest() {
 		assertEquals(Optional.of(str) to 233, lrl(mss())(Optional.of(str) to 233))
 		assertEquals(Optional.empty<String>() to 233, lrl(mss())(Optional.empty<String>() to 233))
-		assertEquals(left<Int, Pair<String, Int>>(233), rlr(mss())(left(233)))
-		assertEquals(right<Int, Pair<String, Int>>(str to 233), rlr(mss())(right(str to 233)))
+		assertEquals(left(233), rlr(mss())(left(233)))
+		assertEquals(right(str to 233), rlr(mss())(right(str to 233)))
 		assertEquals(Unit to true, lrl(mso())(Unit to true))
 		assertEquals(Unit to false, lrl(mso())(Unit to false))
 		assertTrue(rlr(mso())(true))
@@ -214,9 +209,9 @@ class ISOTest {
 		private val MEOW = "meow"
 		private val MOE = "moe"
 		private val tISO = iso({ it: Boolean -> if (it) MEOW else MOE }, { it: String -> MEOW == it })
-		private val mISO = iso<Optional<Boolean>, Optional<Boolean>>({ it.map({ if (it) of(false) else empty() }).orElseGet({ of(true) }) }, { it })
+		private val mISO = iso<Optional<Boolean>, Optional<Boolean>>({ it.map({ if (it) Optional.of(false) else Optional.empty() }).orElseGet({ Optional.of(true) }) }, { it })
 		private val bISO = isoUnOptional(mISO)
-		private val badMISO = iso<Optional<Boolean>, Optional<Boolean>>({ it.flatMap({ if (it) of(false) else empty() }) }, { it })
+		private val badMISO = iso<Optional<Boolean>, Optional<Boolean>>({ it.flatMap({ if (it) Optional.of(false) else Optional.empty() }) }, { it })
 		private val badISO = isoUnOptional(badMISO)
 		private fun <A, B> lrl(iso: ISO<A, B>): (A) -> A = { iso.bw(iso.fw(it)) }
 		private fun <A, B> rlr(iso: ISO<A, B>): (B) -> B = { iso.fw(iso.bw(it)) }

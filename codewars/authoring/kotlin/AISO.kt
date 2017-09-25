@@ -1,8 +1,6 @@
 import java.util.*
-import java.util.stream.Collectors.toList
+import java.util.stream.Collectors
 import java.util.stream.Stream
-import java.util.stream.Stream.*
-
 
 /*
  * so, when are two type, `a` and `b`, considered equal?
@@ -90,8 +88,8 @@ fun <A, B> isoUnOptional(iso: ISO<Optional<A>, Optional<B>>): ISO<A, B> = iso({ 
 // isoUnEither ::
 // ISO (Either a b) (Either c d) -> ISO a c -> ISO b d.
 // Note that we have
-fun isoEU(): ISO<Either<Stream<Unit>, Unit>, Either<Stream<Unit>, Nothing>> = iso({ it.pm({ left(concat(of(Unit), it)) }, { left(empty()) }) },
-		{ it.pm({ it.collect(toList()).let { if (it.isEmpty()) right(Unit) else left(generate { Unit }.limit(it.size - 1L)) } }, { it.absurd() }) })
+fun isoEU(): ISO<Either<Stream<Unit>, Unit>, Either<Stream<Unit>, Nothing>> = iso({ it.pm({ left(Stream.concat(Stream.of(Unit), it)) }, { left(Stream.empty()) }) },
+		{ it.pm({ it.collect(Collectors.toList()).let { if (it.isEmpty()) right(Unit) else left(Stream.generate { Unit }.limit(it.size - 1L)) } }, { it.absurd() }) })
 
 // where (), the empty Pair, has 1 value, and Void has 0 value
 // If we have isoUnEither,
@@ -190,3 +188,4 @@ fun <A, B> powS(): ISO<(Optional<B>) -> A, Pair<A, (B) -> A>> =
  * to prove that you really get what is going on!
  */
 fun <A> powSO(): ISO<(Unit) -> A, A> = iso({ f -> f(Unit) }, { a -> { a } })
+
