@@ -1,7 +1,5 @@
 module SimpleTokenizer (Token(..), tokenize) where
 
-import Data.Char
-import Data.List
 import Control.Monad
 import Control.Applicative
 
@@ -52,8 +50,14 @@ item = Parser $ \s -> case s of
 
 satisfy :: (Char -> Bool) -> Parser Char
 satisfy p = item >>= \c -> if p c then return c else empty
+
+char :: Char -> Parser Char
 char = satisfy . (==)
+
+oneOf :: Foldable t => t Char -> Parser Char
 oneOf s = satisfy (`elem` s)
+
+spaces :: Parser String
 spaces = many $ oneOf " \n\t"
 
 data Token = Token String | Brackets [Token]
@@ -62,25 +66,28 @@ data Token = Token String | Brackets [Token]
 tokenize :: String -> Maybe [Token]
 tokenize = parseCode tknz
 
+tk :: Parser Token
 tk = bkt tk <|> do
-  spaces
+  _   <- spaces
   res <- some (oneOf operatorChars)
     <|> some (oneOf $ [ 'a' .. 'z' ] ++ [ 'A' .. 'Z' ])
   return $ Token res
 --
 
+bkt :: Parser Token -> Parser Token
 bkt o = do
-  spaces
-  char '('
+  _   <- spaces
+  _   <- char '('
   res <- many o
-  spaces
-  char ')'
+  _   <- spaces
+  _   <- char ')'
   return $ Brackets res
 --
 
+tknz :: Parser [Token]
 tknz = do
   a <- many tk
-  spaces
+  _ <- spaces
   return a
 --
 

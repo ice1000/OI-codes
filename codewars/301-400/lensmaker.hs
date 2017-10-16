@@ -6,19 +6,18 @@ module MicroLens where
 
 import Prelude hiding (sum)
 import Data.Monoid
-import Control.Applicative
 import qualified Data.Traversable as T
 
 ---------------------------------------------------------
 -- Some basic libraries
 
 class Profunctor p where
-  dimap :: (a' -> a) -> (b -> b') -> (p a b -> p a' b')
+  dimap :: (a' -> a) -> (b -> b') -> p a b -> p a' b'
   dimap f g = lmap f . rmap g
-  lmap ::  (a' -> a) -> (p a b -> p a' b)
+  lmap ::  (a' -> a) -> p a b -> p a' b
   lmap f = dimap f id
-  rmap ::  (b -> b') -> (p a b -> p a b')
-  rmap f = dimap id f
+  rmap ::  (b -> b') -> p a b -> p a b'
+  rmap = dimap id
 --
 
 class Profunctor p => Choice p where
@@ -32,7 +31,7 @@ instance Profunctor (->) where
 
 instance Choice (->) where
   left'  f = either (Left . f) Right
-  right' f = either Left (Right . f)
+  right'   = fmap
 --
 
 class Contravariant f where
@@ -49,7 +48,7 @@ instance Monoid b => Applicative (K b) where
 --
 
 instance Contravariant (K b) where
-  contramap f (K b) = K b
+  contramap _ (K b) = K b
 --
 
 newtype Id a = Id { getId :: a } deriving Functor
@@ -156,7 +155,7 @@ elements = traverse
 -- toListOf :: Traversal s s a a -> (s -> [a])
 -- @_@
 -- >_> (a -> f a) -> (s -> f s)
-toListOf :: Optic (->) (K (Endo [a])) s s a a -> (s -> [a])
+toListOf :: Optic (->) (K (Endo [a])) s s a a -> s -> [a]
 toListOf f = (`appEndo` []) . getK  . f (K . Endo . (:))
 
 -- | A function which takes any kind of Optic which might
@@ -166,7 +165,7 @@ toListOf f = (`appEndo` []) . getK  . f (K . Endo . (:))
 -- @_@
 -- preview :: Traversal s s a a -> (s -> Maybe a)
 -- @_@
-preview :: Optic (->) (K (First a)) s s a a -> (s -> Maybe a)
+preview :: Optic (->) (K (First a)) s s a a -> s -> Maybe a
 preview f = getFirst . getK . f (K . First . Just)
 
 -- | A helper function which witnesses the fact that any

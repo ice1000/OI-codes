@@ -188,4 +188,3 @@ fun <A, B> powS(): ISO<(Optional<B>) -> A, Pair<A, (B) -> A>> =
  * to prove that you really get what is going on!
  */
 fun <A> powSO(): ISO<(Unit) -> A, A> = iso({ f -> f(Unit) }, { a -> { a } })
-

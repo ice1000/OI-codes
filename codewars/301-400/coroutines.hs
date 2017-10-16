@@ -9,16 +9,20 @@ import Preloaded
 -- Preloaded contains the following:
 --
 -- newtype Coroutine r u d a = Coroutine { runCoroutine :: (Command r u d a -> r) -> r } deriving (Functor)
---
+
 -- data Command r u d a =
 --   Done a
--- | Out d (Coroutine r u d a)
--- | In (u -> Coroutine r u d a) deriving Functor
+--   | Out d (Coroutine r u d a)
+--   | In (u -> Coroutine r u d a) deriving Functor
 
 -- Useful alias
 apply :: Coroutine r u d a -> (Command r u d a -> r) -> r
 apply = runCoroutine
+
+(||>) :: d -> Coroutine r u d a -> Command r u d a
 (||>) = Out
+
+(=>>) :: Coroutine r u d a -> (Command r u d a -> r) -> r
 (=>>) = apply
 
 instance Applicative (Coroutine r u d) where
@@ -35,19 +39,19 @@ instance Monad (Coroutine r u d) where
 --
 
 (>>>) :: Coroutine r u m a -> Coroutine r m d a -> Coroutine r u d a
-p1 >>> (Coroutine p2) = Coroutine $ \k -> p2 $ \case
+p'1 >>> (Coroutine p'2) = Coroutine $ \k -> p'2 $ \case
   Done a  -> k $ Done a
-  Out d c -> k $ Out d $ p1 >>> c
-  In c    -> pipe2 p1 c `apply` k
+  Out d c -> k $ Out d $ p'1 >>> c
+  In c    -> pipe2 p'1 c =>> k
 --
 
 -- It might be useful to define the following function
 
 pipe2 :: Coroutine r u m a -> (m -> Coroutine r m d a) -> Coroutine r u d a
-pipe2 (Coroutine p1) p2 = Coroutine $ \k -> p1 $ \case
+pipe2 (Coroutine p'1) p'2 = Coroutine $ \k -> p'1 $ \case
     Done a  -> k $ Done a
-    Out d c -> apply (c >>> p2 d) k
-    In c    -> k $ In $ (`pipe2` p2) <$> c
+    Out d c -> c >>> p'2 d =>> k
+    In c    -> k $ In $ (`pipe2` p'2) <$> c
 --
 
 -- Library functions
