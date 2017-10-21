@@ -12,8 +12,8 @@ module OperatorParser
 where
 
 import Text.ParserCombinators.ReadP
-import Text.Parsec.Expr
-import Text.Parsec.String
+import Text.Parsec.Expr ()
+import Text.Parsec.String ()
 import Control.Applicative hiding (many)
 
 -- | Type for operator parse results. 'a' is the type of the operator, 'b'
@@ -64,10 +64,10 @@ brackets a = do
 --
 
 chainm1 :: ReadP a -> ReadP (a -> a -> a) -> ReadP a
-chainm1 p op = do
+chainm1 p op' = do
   a <- p
   (do
-      f <- op
+      f <- op'
       b <- p
       return $ f a b) <|> return a
 --
