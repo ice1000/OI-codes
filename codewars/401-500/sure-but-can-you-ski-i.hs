@@ -3,8 +3,6 @@
 
 module Combinators where
 
-import Unsafe.Coerce
-
 -- import PredefinedCombinators (SKI(..))
 
 -- Formally, in lambda calculus, SKI combinators are defined as:
@@ -61,22 +59,18 @@ prettyPrintSKI :: SKI a -> String
 prettyPrintSKI  I       = "I"
 prettyPrintSKI  K       = "K"
 prettyPrintSKI  S       = "S"
-prettyPrintSKI (Ap a b) = "Ap ( " ++ prettyPrintSKI a ++ " , "
+prettyPrintSKI (Ap a b) = "( " ++ prettyPrintSKI a ++ " , "
                           ++ prettyPrintSKI b ++ " )"
 
 ------------------------------------------------------------------------------
 -- Task #3: write the following basic combinators in the SKI system.
 
-($$) :: SKI (a -> b) -> SKI a -> SKI b
-($$) = Ap
-infixl 8 $$
-
 rev :: SKI (a -> (a -> b) -> b)
 -- rev = S $$ Ap K (S $$ I) $$ K
-rev = (S $$ (K $$ (S $$ I))) $$ K
+rev = Ap (Ap S (Ap K (Ap S I))) K
 
 comp :: SKI ((b -> c) -> (a -> b) -> (a -> c))
-comp = error "todo: comp"
+comp = Ap (Ap S (Ap K S)) K
 
 flip' :: SKI ((a -> b -> c) -> (b -> a -> c))
 flip' = error "todo: flip'"
@@ -90,7 +84,7 @@ rotv = error "todo: rotv"
 -- We can't write `fix` i.e Y in Haskell because Haskell is typed
 -- (well, at least without recursive types), but we can still write `join`
 join :: SKI ((a -> a -> b) -> a -> b)
-join = error "todo: join"
+join = Ap (Ap S S) (Ap S K)
 
 ------------------------------------------------------------------------------
 -- Task #4: implement Boolean algebra in the SKI system
@@ -108,19 +102,19 @@ join = error "todo: join"
 type Bool' a = a -> a -> a
 
 true :: SKI (Bool' a)
-true = I $$ K
+true = Ap I K
 
 false :: SKI (Bool' a)
-false = K $$ I
+false = Ap K I
 
 not' :: SKI (Bool' (Bool' a) -> Bool' a)
-not' = unsafeCoerce true
+not' = Ap K K
 
 and' :: SKI (Bool' (Bool' a) -> Bool' a -> Bool' a)
-and' = unsafeCoerce false
+and' = Ap S (Ap I K)
 
 or' :: SKI (Bool' (Bool' a) -> Bool' a -> Bool' a)
-or' = unsafeCoerce true
+or' = Ap S K
 
 xor' :: SKI (Bool' (Bool' a -> Bool' a) -> Bool' a -> Bool' a)
-xor' = unsafeCoerce false
+xor' = Ap K I
